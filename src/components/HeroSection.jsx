@@ -66,14 +66,16 @@ const HeroSection = () => {
 
           {/* Call to Action */}
           <div className="hero-cta animate-fadeInUp">
-            <a
-              href="https://outgo.com.br/camarotepmd2026"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="ingressos"
+              spy={true}
+              smooth={true}
+              offset={-80}
+              duration={500}
               className="btn btn-primary btn-lg animate-pulse"
             >
               Vendas Online
-            </a>
+            </Link>
             <Link
               to="pontos-de-venda"
               spy={true}
