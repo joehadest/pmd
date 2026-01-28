@@ -49,17 +49,6 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  to="sobre"
-                  spy={true}
-                  smooth={true}
-                  offset={-80}
-                  duration={500}
-                >
-                  Sobre
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="lineup"
                   spy={true}
                   smooth={true}
@@ -82,13 +71,13 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  to="galeria"
+                  to="pontos-de-venda"
                   spy={true}
                   smooth={true}
                   offset={-80}
                   duration={500}
                 >
-                  Galeria
+                  Pontos de Venda
                 </Link>
               </li>
             </ul>
@@ -137,18 +126,6 @@ const Header = () => {
             </li>
             <li>
               <Link
-                to="sobre"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                onClick={closeMobileMenu}
-              >
-                Sobre
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="lineup"
                 spy={true}
                 smooth={true}
@@ -181,18 +158,6 @@ const Header = () => {
                 onClick={closeMobileMenu}
               >
                 Pontos de Venda
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="galeria"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                onClick={closeMobileMenu}
-              >
-                Galeria
               </Link>
             </li>
             <li>

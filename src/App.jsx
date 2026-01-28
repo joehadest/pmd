@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
-import AboutSection from './components/AboutSection';
 import VideoSection from './components/VideoSection';
 import LineUpSection from './components/LineUpSection';
 import TicketsSection from './components/TicketsSection';
 import SalesPointsSection from './components/SalesPointsSection';
-import GallerySection from './components/GallerySection';
-import LocationSection from './components/LocationSection';
 import InstagramSection from './components/InstagramSection';
 import Footer from './components/Footer';
 
@@ -35,12 +32,9 @@ function App() {
       <main>
         <HeroSection />
         <VideoSection />
-        <AboutSection />
         <LineUpSection />
         <TicketsSection />
         <SalesPointsSection />
-        <GallerySection />
-        <LocationSection />
         <InstagramSection />
       </main>
       <Footer />

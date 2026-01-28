@@ -59,10 +59,6 @@ const TicketsSection = () => {
 
             {/* Descrição */}
             <div className="ticket-description">
-              <p>
-                <strong>ACESSO INDIVIDUAL CAMAROTE PMD</strong> - Garanta 1 acesso 
-                (pulseira + abadá) e aproveite toda a estrutura do Camarote PMD com exclusividade!
-              </p>
               <ul className="ticket-features">
                 <li>✓ 2 DIAS de Open Bar</li>
                 <li>✓ Atrações Exclusivas</li>
@@ -110,23 +106,6 @@ const TicketsSection = () => {
           </div>
         </div>
 
-        {/* Aviso Importante */}
-        <div className="tickets-disclaimer animate-fadeInUp">
-          <h4>⚠️ Informações Importantes</h4>
-          <ul>
-            <li>O ingresso é individual e intransferível</li>
-            <li>Menores de 18 anos não são permitidos</li>
-            <li>Apresentação de documento com foto é obrigatória</li>
-            <li>A retirada da pulseira e abadá será informada posteriormente</li>
-            <li>Vagas limitadas - garanta já o seu!</li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Background Decorativo */}
-      <div className="tickets-background">
-        <div className="bg-shape bg-shape-1"></div>
-        <div className="bg-shape bg-shape-2"></div>
       </div>
     </section>
   );

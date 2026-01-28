@@ -3,40 +3,22 @@ import { FaMicrophone, FaMusic, FaStar, FaImage } from 'react-icons/fa';
 import './LineUpSection.css';
 
 const LineUpSection = () => {
-  // Atrações confirmadas + placeholders
+  // Atrações confirmadas
   const lineup = [
     {
       name: 'BANDA PRETA',
       time: 'Horário a confirmar',
-      photo: '/LINE UP/BANDA PRETA.png',
-      placeholder: false
+      photo: '/LINE UP/BANDA PRETA.png'
     },
     {
       name: 'JEFF COSTA',
       time: 'Horário a confirmar',
-      photo: '/LINE UP/JEFF COSTA.png',
-      placeholder: false
+      photo: '/LINE UP/JEFF COSTA.png'
     },
     {
       name: 'LUCAS BOQUINHA',
       time: 'Horário a confirmar',
-      photo: '/LINE UP/LUCAS BOQUINHA.png',
-      placeholder: false
-    },
-    {
-      name: 'Em Breve',
-      time: 'Mais atrações',
-      placeholder: true
-    },
-    {
-      name: 'Em Breve',
-      time: 'Mais atrações',
-      placeholder: true
-    },
-    {
-      name: 'Em Breve',
-      time: 'Mais atrações',
-      placeholder: true
+      photo: '/LINE UP/LUCAS BOQUINHA.png'
     }
   ];
 
@@ -60,21 +42,9 @@ const LineUpSection = () => {
               className="lineup-card animate-fadeInUp"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Foto da Atração - Placeholder */}
+              {/* Foto da Atração */}
               <div className="artist-photo">
-                {artist.placeholder ? (
-                  <div className="image-placeholder lineup-placeholder">
-                    <FaMicrophone />
-                    <span>Foto da Atração {index + 1}</span>
-                    {/* ADICIONAR FOTO:
-                        Coloque a imagem em /public/images/lineup-{index + 1}.jpg
-                        Dimensões recomendadas: 400x400px
-                        Formato: JPG
-                    */}
-                  </div>
-                ) : (
-                  <img src={artist.photo} alt={artist.name} />
-                )}
+                <img src={artist.photo} alt={artist.name} />
               </div>
 
               {/* Informações da Atração */}
@@ -109,13 +79,6 @@ const LineUpSection = () => {
         </div>
       </div>
 
-      {/* Background Decorativo */}
-      <div className="lineup-decoration">
-        <div className="deco-note deco-note-1">♪</div>
-        <div className="deco-note deco-note-2">♫</div>
-        <div className="deco-note deco-note-3">♪</div>
-        <div className="deco-note deco-note-4">♫</div>
-      </div>
     </section>
   );
 };

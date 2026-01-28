@@ -59,12 +59,6 @@ const VideoSection = () => {
         </div>
       </div>
 
-      {/* Elementos Decorativos com Parallax */}
-      <div className="video-decorations">
-        <div className="deco-shape deco-1"></div>
-        <div className="deco-shape deco-2"></div>
-        <div className="deco-shape deco-3"></div>
-      </div>
     </section>
   );
 };

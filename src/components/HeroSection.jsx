@@ -32,8 +32,7 @@ const HeroSection = () => {
           {/* Descrição */}
           <div className="hero-description animate-fadeInUp">
             <p>
-              Experiência única no <strong>Alto Folia</strong>! 2 dias de open bar, 
-              atrações incríveis, segurança e vista privilegiada dos trios elétricos.
+              2 dias de open bar, atrações e vista privilegiada no <strong>Alto Folia 2026</strong>
             </p>
           </div>
 
@@ -95,18 +94,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Elementos Decorativos */}
-      <div className="hero-decorations">
-        <div className="decoration decoration-1"></div>
-        <div className="decoration decoration-2"></div>
-        <div className="decoration decoration-3"></div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="scroll-indicator">
-        <span>Role para baixo</span>
-        <div className="scroll-arrow"></div>
-      </div>
     </section>
   );
 };

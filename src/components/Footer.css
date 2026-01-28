@@ -2,65 +2,38 @@
   position: relative;
   background: var(--gradient-primary);
   color: var(--color-white);
-  padding: var(--spacing-xl) 0 var(--spacing-md);
-  overflow: hidden;
+  padding: var(--spacing-xl) 0;
+  text-align: center;
 }
 
 /* Footer Content */
 .footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-  position: relative;
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
-.footer-column {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.footer-column:nth-child(1) { animation-delay: 0.1s; }
-.footer-column:nth-child(2) { animation-delay: 0.2s; }
-.footer-column:nth-child(3) { animation-delay: 0.3s; }
-.footer-column:nth-child(4) { animation-delay: 0.4s; }
-
-/* Títulos */
+/* Título */
 .footer-title {
-  font-size: var(--font-size-2xl);
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 900;
   color: var(--color-primary);
-  margin-bottom: var(--spacing-sm);
+  margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
-}
-
-.footer-subtitle {
-  font-size: var(--font-size-xl);
-  font-weight: 700;
-  color: var(--color-white);
-  margin-bottom: var(--spacing-sm);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Descrição */
-.footer-description {
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin-bottom: var(--spacing-sm);
 }
 
 /* Social Links */
 .footer-social {
   display: flex;
   gap: var(--spacing-sm);
-  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .social-link {
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,7 +41,7 @@
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   color: var(--color-white);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   transition: all var(--transition-normal);
 }
 
@@ -79,137 +52,11 @@
   color: var(--color-white);
 }
 
-/* Links */
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-links li {
-  margin-bottom: var(--spacing-xs);
-}
-
-.footer-links li a {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: var(--font-size-base);
-  transition: all var(--transition-fast);
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  padding-left: 1rem;
-}
-
-.footer-links li a::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--color-primary);
-  transition: transform var(--transition-fast);
-}
-
-.footer-links li a:hover {
-  color: var(--color-primary);
-  transform: translateX(5px);
-}
-
-.footer-links li a:hover::before {
-  transform: translateX(3px);
-}
-
-/* Info */
-.footer-info {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-info li {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.info-icon {
-  color: var(--color-primary);
-  font-size: 1.125rem;
-  flex-shrink: 0;
-}
-
-/* Producer */
-.producer-info {
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-  margin-bottom: var(--spacing-sm);
-}
-
-.producer-info strong {
-  color: var(--color-white);
-  font-size: var(--font-size-lg);
-}
-
-.producer-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: 0.75rem 1.5rem;
-  background: var(--color-primary);
-  color: var(--color-white);
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  transition: all var(--transition-normal);
-}
-
-.producer-link:hover {
-  background: var(--color-white);
-  color: var(--color-secondary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Footer Bottom */
-.footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding-top: var(--spacing-md);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
-  position: relative;
-  z-index: 1;
-}
-
-.footer-copyright,
-.footer-made-with {
+/* Copyright */
+.footer-copyright {
   color: rgba(255, 255, 255, 0.8);
   font-size: var(--font-size-sm);
   margin: 0;
-}
-
-.footer-made-with {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.heart-icon {
-  color: #ff6b6b;
-  animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-  0%, 100% {
-    transform: scale(1);
-  }
-  25% {
-    transform: scale(1.2);
-  }
-  50% {
-    transform: scale(1);
-  }
 }
 
 /* Scroll to Top Button */
@@ -233,12 +80,6 @@
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  animation: fadeIn 0.3s ease;
-}
-
-.scroll-to-top.visible {
-  opacity: 1;
-  visibility: visible;
 }
 
 .scroll-to-top:hover {
@@ -252,63 +93,10 @@ body:not(.at-top) .scroll-to-top {
   visibility: visible;
 }
 
-/* Decorative Elements */
-.footer-decoration {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.decoration-circle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.05;
-  animation: float 8s ease-in-out infinite;
-}
-
-.decoration-circle-1 {
-  width: 400px;
-  height: 400px;
-  background: var(--color-primary);
-  top: -100px;
-  right: -100px;
-  animation-delay: 0s;
-}
-
-.decoration-circle-2 {
-  width: 300px;
-  height: 300px;
-  background: var(--color-accent);
-  bottom: -50px;
-  left: -50px;
-  animation-delay: 2s;
-}
-
 /* Responsividade */
-@media (max-width: 1024px) {
-  .footer-content {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-  }
-}
-
 @media (max-width: 768px) {
   .footer {
-    padding: var(--spacing-lg) 0 var(--spacing-md);
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    text-align: center;
+    padding: var(--spacing-lg) 0;
   }
 
   .scroll-to-top {
@@ -324,14 +112,10 @@ body:not(.at-top) .scroll-to-top {
     font-size: var(--font-size-xl);
   }
 
-  .footer-subtitle {
-    font-size: var(--font-size-lg);
-  }
-
   .social-link {
-    width: 40px;
-    height: 40px;
-    font-size: 1.125rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.25rem;
   }
 
   .scroll-to-top {
@@ -340,4 +124,3 @@ body:not(.at-top) .scroll-to-top {
     font-size: 1.125rem;
   }
 }
-
