@@ -37,7 +37,7 @@ const VideoSection = () => {
         {/* Container do Vídeo */}
         <div className="video-wrapper">
           <div className="video-player autoplay">
-            {/* Vídeo PMD do YouTube - Loop Infinito como GIF */}
+            {/* Vídeo PMD do YouTube - Loop Infinito como GIF com bordas rasgadas */}
             <iframe
               ref={videoRef}
               className="video-element"
