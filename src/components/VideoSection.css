@@ -1,0 +1,336 @@
+.video-section {
+  position: relative;
+  width: 100%;
+  min-height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a1628 0%, #184196 50%, #0a1628 100%);
+  overflow: hidden;
+  padding: var(--spacing-lg) 0;
+  --scroll-scale: 1;
+}
+
+/* Container Full Width */
+.video-container-full {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 var(--spacing-md);
+  position: relative;
+  z-index: 2;
+}
+
+/* Header */
+.video-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.video-title {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, var(--color-white) 0%, var(--color-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--spacing-sm);
+  text-shadow: 0 4px 20px rgba(243, 172, 60, 0.3);
+}
+
+.video-subtitle {
+  color: var(--color-accent);
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Video Wrapper */
+.video-wrapper {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  transform: scale(var(--scroll-scale));
+  transition: transform 0.3s ease-out;
+}
+
+.video-player {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  max-height: 500px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 100px rgba(59, 149, 247, 0.3);
+  background: #000;
+  transition: all var(--transition-normal);
+}
+
+/* Quando atinge o max-height, ajusta o padding */
+@media (min-width: 890px) {
+  .video-player {
+    padding-bottom: 0;
+    height: 500px;
+  }
+}
+
+/* Em telas muito grandes, manter tamanho controlado */
+@media (min-width: 1920px) {
+  .video-wrapper {
+    max-width: 950px;
+  }
+  
+  .video-player {
+    height: 480px;
+  }
+}
+
+.video-player:hover {
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 2px rgba(243, 172, 60, 0.5),
+    0 0 150px rgba(243, 172, 60, 0.4);
+  transform: translateY(-8px);
+}
+
+/* Video Element - YouTube Iframe */
+.video-element {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%) scale(1.15);
+  display: block;
+  border: none;
+  pointer-events: none; /* Desabilita interação - funciona como GIF */
+}
+
+/* Overlay de brilho sutil sobre o vídeo */
+.video-player::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(24, 65, 150, 0.1) 0%,
+    rgba(59, 149, 247, 0.05) 100%
+  );
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Caption */
+.video-caption {
+  text-align: center;
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.video-caption p {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: var(--font-size-lg);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.video-caption strong {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* Decorações com Parallax */
+.video-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.deco-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.08;
+  filter: blur(60px);
+}
+
+.deco-1 {
+  width: 600px;
+  height: 600px;
+  background: var(--color-primary);
+  top: -200px;
+  right: -200px;
+  animation: float 8s ease-in-out infinite;
+}
+
+.deco-2 {
+  width: 400px;
+  height: 400px;
+  background: var(--color-accent);
+  bottom: -100px;
+  left: -100px;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+.deco-3 {
+  width: 300px;
+  height: 300px;
+  background: var(--color-secondary);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 6s ease-in-out infinite;
+}
+
+/* Animações extras */
+@keyframes videoGlow {
+  0%, 100% {
+    box-shadow: 
+      0 20px 60px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 0 100px rgba(59, 149, 247, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 20px 60px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 0 120px rgba(243, 172, 60, 0.4);
+  }
+}
+
+.video-player {
+  animation: videoGlow 4s ease-in-out infinite;
+}
+
+/* Responsividade */
+@media (max-width: 1400px) {
+  .video-container-full {
+    padding: 0 var(--spacing-lg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .video-section {
+    padding: var(--spacing-md) 0;
+  }
+
+  .video-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+  
+  .video-player {
+    max-height: none;
+    padding-bottom: 56.25%;
+    height: auto;
+  }
+
+  .deco-1,
+  .deco-2 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .video-section {
+    padding: var(--spacing-md) 0;
+  }
+
+  .video-container-full {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .video-header {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .video-title {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    letter-spacing: 2px;
+  }
+
+  .video-subtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .video-player {
+    border-radius: var(--radius-md);
+  }
+
+  .video-caption {
+    padding: var(--spacing-sm);
+  }
+
+  .video-caption p {
+    font-size: var(--font-size-base);
+  }
+
+  .video-player.autoplay::before {
+    width: 35px;
+    height: 35px;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-section {
+    padding: var(--spacing-sm) 0;
+  }
+
+  .video-player {
+    border-radius: var(--radius-sm);
+  }
+
+  .video-player.autoplay::before {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    bottom: var(--spacing-xs);
+    right: var(--spacing-xs);
+  }
+}
+
+/* Efeito de loop infinito suave */
+.video-player.autoplay {
+  animation: videoGlow 4s ease-in-out infinite;
+}
+
+/* Indicador visual de que está em loop */
+.video-player.autoplay::before {
+  content: '∞';
+  position: absolute;
+  bottom: var(--spacing-sm);
+  right: var(--spacing-sm);
+  width: 40px;
+  height: 40px;
+  background: rgba(243, 172, 60, 0.9);
+  color: var(--color-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.video-player.autoplay:hover::before {
+  opacity: 1;
+}
+
