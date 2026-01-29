@@ -30,7 +30,10 @@ const Header = () => {
         <div className="header-content">
           {/* Logo PMD */}
           <div className="header-logo">
-            <img src="/SELO PMD 2026.png" alt="Camarote PMD 2026" />
+            <img 
+              src="/SELO PMD 2026.png" 
+              alt="Camarote PMD 2026"
+            />
           </div>
 
           {/* Navegação Desktop */}
@@ -41,7 +44,7 @@ const Header = () => {
                   to="inicio"
                   spy={true}
                   smooth={true}
-                  offset={-80}
+                  offset={-60}
                   duration={500}
                 >
                   Início
@@ -52,7 +55,7 @@ const Header = () => {
                   to="lineup"
                   spy={true}
                   smooth={true}
-                  offset={-80}
+                  offset={-60}
                   duration={500}
                 >
                   Line-Up
@@ -63,7 +66,7 @@ const Header = () => {
                   to="ingressos"
                   spy={true}
                   smooth={true}
-                  offset={-80}
+                  offset={-60}
                   duration={500}
                 >
                   Ingressos
@@ -74,7 +77,7 @@ const Header = () => {
                   to="pontos-de-venda"
                   spy={true}
                   smooth={true}
-                  offset={-80}
+                  offset={-60}
                   duration={500}
                 >
                   Pontos de Venda

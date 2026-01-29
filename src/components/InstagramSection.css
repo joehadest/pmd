@@ -1,5 +1,5 @@
 .instagram-section {
-  background: linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #F77737 100%);
+  background: transparent;
   color: var(--color-white);
   position: relative;
   overflow: hidden;

@@ -1,6 +1,6 @@
 .about-section {
   position: relative;
-  background: linear-gradient(180deg, var(--color-white) 0%, var(--color-light-bg) 100%);
+  background: transparent;
 }
 
 .section-subtitle {

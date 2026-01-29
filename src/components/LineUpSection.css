@@ -1,6 +1,6 @@
 .lineup-section {
   position: relative;
-  background: linear-gradient(135deg, var(--color-dark) 0%, var(--color-secondary) 100%);
+  background: transparent;
   color: var(--color-white);
   overflow: hidden;
 }

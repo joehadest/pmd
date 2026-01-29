@@ -1,6 +1,6 @@
 .tickets-section {
   position: relative;
-  background: var(--gradient-primary);
+  background: transparent;
   color: var(--color-white);
   overflow: hidden;
 }
