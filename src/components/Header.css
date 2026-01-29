@@ -16,6 +16,21 @@
   padding: 1rem 0;
 }
 
+/* Ocultar header no mobile quando no topo (área do Hero) */
+@media (max-width: 768px) {
+  .header:not(.header-scrolled) {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
+  }
+  
+  .header.header-scrolled {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+}
+
 .header-content {
   display: flex;
   align-items: center;

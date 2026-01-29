@@ -25,16 +25,14 @@ const HeroSection = () => {
             {/* Título Principal */}
             <div className="hero-title animate-fadeInUp">
               <h1>
-                <span className="hero-subtitle">Bem-vindo ao</span>
-                <span className="hero-main-title">CAMAROTE PMD</span>
-                <span className="hero-year">2026</span>
+                <span className="hero-main-title">CAMAROTE PMD 2026</span>
               </h1>
             </div>
 
             {/* Descrição */}
             <div className="hero-description animate-fadeInUp">
               <p>
-                2 dias de open bar, atrações e vista privilegiada no <strong>Alto Folia 2026</strong>
+                Open bar • Atrações • Vista privilegiada
               </p>
             </div>
 
@@ -75,23 +73,8 @@ const HeroSection = () => {
                 duration={500}
                 className="btn btn-primary btn-lg animate-pulse"
               >
-                Vendas Online
+                Comprar Ingresso
               </Link>
-              <Link
-                to="pontos-de-venda"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                className="btn btn-outline btn-lg"
-              >
-                Vendas Físicas
-              </Link>
-            </div>
-
-            {/* Badge - Pré-venda */}
-            <div className="hero-badge animate-float">
-              <span className="badge-text">Pré-venda Aberta!</span>
             </div>
           </div>
 
