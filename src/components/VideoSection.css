@@ -59,7 +59,7 @@
   position: relative;
   width: 100%;
   padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  max-height: 500px;
+  max-height: 400px;
   border-radius: 0;
   overflow: hidden;
   box-shadow: 
@@ -197,7 +197,7 @@
   }
   
   .video-player {
-    height: 480px;
+    height: 380px;
   }
 }
 
@@ -216,10 +216,23 @@
   left: 50%;
   width: 100%;
   height: 100%;
-  transform: translate(-50%, -50%) scale(1.5);
+  transform: translate(-50%, -50%) scale(2);
   display: block;
   border: none;
   pointer-events: none; /* Desabilita interação - funciona como GIF */
+}
+
+/* Esconde completamente qualquer overlay do YouTube (incluindo símbolo de loop) */
+.video-player::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Overlay de brilho sutil sobre o vídeo */
@@ -287,6 +300,14 @@
 }
 
 /* Responsividade */
+
+/* Telas grandes (1920px+) - Scale maior para preencher toda área */
+@media (min-width: 1920px) {
+  .video-element {
+    transform: translate(-50%, -50%) scale(2.2);
+  }
+}
+
 @media (max-width: 1400px) {
   .video-container-full {
     padding: 0 var(--spacing-lg);
@@ -324,7 +345,7 @@
   }
 
   .video-element {
-    transform: translate(-50%, -50%) scale(1.6);
+    transform: translate(-50%, -50%) scale(2.1);
   }
 }
 
@@ -375,17 +396,9 @@
   .video-caption p {
     font-size: var(--font-size-base);
   }
-
-  .video-player.autoplay::before {
-    width: 35px;
-    height: 35px;
-    font-size: 1.25rem;
-    bottom: 3%;
-    right: var(--spacing-sm);
-  }
   
   .video-element {
-    transform: translate(-50%, -50%) scale(1.7);
+    transform: translate(-50%, -50%) scale(2.2);
   }
 }
 
@@ -393,17 +406,9 @@
   .video-section {
     padding: var(--spacing-sm) 0;
   }
-
-  .video-player.autoplay::before {
-    width: 30px;
-    height: 30px;
-    font-size: 1rem;
-    bottom: 3%;
-    right: var(--spacing-xs);
-  }
   
   .video-element {
-    transform: translate(-50%, -50%) scale(1.8);
+    transform: translate(-50%, -50%) scale(2.3);
   }
 }
 
@@ -412,29 +417,5 @@
   animation: videoGlow 4s ease-in-out infinite;
 }
 
-/* Indicador visual de que está em loop */
-.video-player.autoplay::before {
-  content: '∞';
-  position: absolute;
-  bottom: 4%;
-  right: var(--spacing-md);
-  width: 40px;
-  height: 40px;
-  background: rgba(243, 172, 60, 0.9);
-  color: var(--color-white);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  z-index: 10;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.video-player.autoplay:hover::before {
-  opacity: 1;
-}
+/* Indicador visual de que está em loop - REMOVIDO */
 

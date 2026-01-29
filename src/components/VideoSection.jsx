@@ -41,7 +41,7 @@ const VideoSection = () => {
             <iframe
               ref={videoRef}
               className="video-element"
-              src="https://www.youtube.com/embed/wOeo-zHBKMA?autoplay=1&mute=1&loop=1&playlist=wOeo-zHBKMA&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&playsinline=1"
+              src="https://www.youtube.com/embed/wOeo-zHBKMA?autoplay=1&mute=1&loop=1&playlist=wOeo-zHBKMA&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&playsinline=1&disablekb=1&fs=0&autohide=1"
               title="Camarote PMD 2026"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
