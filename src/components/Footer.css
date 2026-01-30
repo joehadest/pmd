@@ -124,3 +124,114 @@ body:not(.at-top) .scroll-to-top {
     font-size: 1.125rem;
   }
 }
+
+/* Features do Evento - Integrado no Footer - Full Width */
+.footer-features {
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+  /* width, margin-left e margin-right são definidos via JavaScript */
+}
+
+.footer-features .hero-features-scroll {
+  overflow: hidden;
+  width: 100%;
+}
+
+.footer-features .hero-features-content {
+  display: flex;
+  gap: 0;
+  animation: heroFeaturesScroll 30s linear infinite;
+  width: fit-content;
+}
+
+.footer-features .hero-features-content:hover {
+  animation-play-state: paused;
+}
+
+.footer-features .hero-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.footer-features .hero-feature-item:nth-child(6),
+.footer-features .hero-feature-item:nth-child(12) {
+  margin-right: 0;
+}
+
+.footer-features .hero-feature-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.footer-features .feature-icon {
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.footer-features .feature-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-white);
+  letter-spacing: 0.3px;
+}
+
+/* Responsividade dos Features no Footer */
+@media (max-width: 768px) {
+  .footer-features {
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+  }
+
+  .footer-features .hero-feature-item {
+    padding: 0.45rem 0.9rem;
+    gap: 0.4rem;
+    margin-right: 0.75rem;
+  }
+
+  .footer-features .feature-icon {
+    font-size: 0.85rem;
+  }
+
+  .footer-features .feature-text {
+    font-size: 0.7rem;
+  }
+
+  .footer-features .hero-features-content {
+    animation: heroFeaturesScroll 20s linear infinite;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-features .hero-feature-item {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.6rem;
+  }
+
+  .footer-features .feature-icon {
+    font-size: 0.75rem;
+  }
+
+  .footer-features .feature-text {
+    font-size: 0.65rem;
+  }
+}

@@ -36,6 +36,7 @@ function App() {
         <TicketsSection />
         <SalesPointsSection />
         <InstagramSection />
+        <VideoSection />
       </main>
       <Footer />
     </div>
