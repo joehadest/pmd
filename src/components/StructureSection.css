@@ -15,6 +15,8 @@
   overflow: hidden;
   box-shadow: var(--shadow-md);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer; /* Indica que é clicável */
+  position: relative;
 }
 
 .structure-card:hover {
@@ -40,6 +42,34 @@
   transform: scale(1.05);
 }
 
+/* Overlay "Clique para ampliar" */
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.structure-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.card-overlay span {
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: 2px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
 /* Placeholder se não houver imagem */
 .structure-placeholder {
   width: 100%;
@@ -51,17 +81,127 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* Nota Informativa */
+.structure-note {
+  text-align: center;
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: var(--spacing-lg);
+  position: relative;
+  z-index: 2;
+}
+
+.structure-note p {
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+}
+
+.structure-note strong {
+  color: var(--color-primary);
+}
+
+/* --- ESTILOS DO LIGHTBOX (Tela Cheia) --- */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.lightbox-caption {
+  color: white;
+  font-size: 1.1rem;
+}
+
+/* Botões do Lightbox */
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: none;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  z-index: 10000;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: var(--color-primary);
+}
+
+.lightbox-close {
+  top: 20px;
+  right: 20px;
+}
+
+.lightbox-prev {
+  left: 20px;
+}
+
+.lightbox-next {
+  right: 20px;
+}
 
 /* Responsividade */
 @media (max-width: 768px) {
   .structure-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-sm);
+    gap: 10px;
   }
 
   .card-image-wrapper {
     height: 200px;
   }
+
+  /* Ajustes Lightbox Mobile */
+  .lightbox-prev, .lightbox-next {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    bottom: 20px;
+    top: auto; /* Move botões para baixo no mobile */
+  }
+
+  .lightbox-prev { left: 30%; transform: translateX(-50%); }
+  .lightbox-next { right: 30%; transform: translateX(50%); }
 }
 
 @media (max-width: 480px) {
@@ -71,6 +211,6 @@
   }
 
   .card-image-wrapper {
-    height: 180px;
+    height: 150px; /* Um pouco menor no mobile */
   }
 }
