@@ -6,9 +6,9 @@ const LineUpSection = () => {
   // Atrações confirmadas
   const lineup = [
     {
-      name: 'BANDA PRETA',
+      name: 'BANDA PRETTA',
       time: 'Horário a confirmar',
-      photo: '/LINE UP/BANDA PRETA.png'
+      photo: '/LINE UP/BANDA PRETA.jpeg'
     },
     {
       name: 'JEFF COSTA',
@@ -19,6 +19,16 @@ const LineUpSection = () => {
       name: 'LUCAS BOQUINHA',
       time: 'Horário a confirmar',
       photo: '/LINE UP/LUCAS BOQUINHA.png'
+    },
+    {
+      name: 'JP FORROZADO',
+      time: 'Horário a confirmar',
+      photo: '/LINE UP/JP FORROZADO.jpeg'
+    },
+    {
+      name: 'PK',
+      time: 'Horário a confirmar',
+      photo: '/LINE UP/PK.jpeg'
     }
   ];
 

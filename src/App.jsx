@@ -3,6 +3,7 @@ import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import VideoSection from './components/VideoSection';
 import LineUpSection from './components/LineUpSection';
+import StructureSection from './components/StructureSection';
 import TicketsSection from './components/TicketsSection';
 import SalesPointsSection from './components/SalesPointsSection';
 import InstagramSection from './components/InstagramSection';
@@ -33,6 +34,7 @@ function App() {
         <HeroSection />
         <VideoSection />
         <LineUpSection />
+        <StructureSection />
         <TicketsSection />
         <SalesPointsSection />
         <InstagramSection />
