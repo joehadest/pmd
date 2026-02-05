@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaMicrophone, FaMusic, FaStar, FaImage } from 'react-icons/fa';
+import { FaMusic, FaStar, FaClock } from 'react-icons/fa';
 import './LineUpSection.css';
 
 const LineUpSection = () => {
@@ -52,12 +52,9 @@ const LineUpSection = () => {
               className="lineup-card animate-fadeInUp"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Foto da Atração */}
               <div className="artist-photo">
                 <img src={artist.photo} alt={artist.name} />
               </div>
-
-              {/* Informações da Atração */}
               <div className="artist-info">
                 <h3 className="artist-name">{artist.name}</h3>
                 <p className="artist-time">{artist.time}</p>
@@ -68,16 +65,18 @@ const LineUpSection = () => {
               </div>
             </div>
           ))}
-        </div>
 
-        {/* Destaque "Em Breve" */}
-        <div className="lineup-coming-soon animate-fadeInUp">
-          <FaStar className="star-icon" />
-          <h3>Mais Atrações em Breve!</h3>
-          <p>
-            Estamos preparando um line-up incrível para você. 
-            Fique ligado nas nossas redes sociais para conferir todas as novidades!
-          </p>
+          {/* Card "Em Breve" (dentro do grid) */}
+          <div className="lineup-card coming-soon-card animate-fadeInUp" style={{ animationDelay: '0.5s' }}>
+            <div className="coming-soon-content">
+              <div className="coming-soon-icon-wrapper">
+                <FaClock className="coming-soon-icon" />
+              </div>
+              <h3>Em Breve</h3>
+              <p>Mais atrações sendo preparadas para você!</p>
+              <span className="coming-soon-badge">Aguarde</span>
+            </div>
+          </div>
         </div>
 
         {/* Nota Informativa */}

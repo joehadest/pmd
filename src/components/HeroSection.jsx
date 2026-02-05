@@ -81,14 +81,14 @@ const HeroSection = () => {
                 <span className="btn-arrow">→</span>
               </Link>
               <Link
-                to="sobre"
+                to="parceiros"
                 spy={true}
                 smooth={true}
                 offset={-60}
-                duration={500}
+                duration={800}
                 className="btn btn-secondary btn-lg"
               >
-                Saiba Mais
+                Seja Parceiro
               </Link>
             </div>
 

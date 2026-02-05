@@ -416,8 +416,15 @@
     gap: 1rem;
   }
 
-  .btn-lg {
+  .hero-cta .btn-lg {
     width: auto;
+    padding: 0.65rem 1.4rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .hero-cta .btn-secondary {
+    border-width: 2px;
   }
 
   .hero-features {
