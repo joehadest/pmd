@@ -109,10 +109,10 @@ const HeroSection = () => {
                 </div>
               </div>
               <div className="info-grid-item">
-                <FaMusic className="info-grid-icon" />
+                <FaBeer className="info-grid-icon" />
                 <div className="info-grid-text">
                   <div className="info-grid-title">2 Dias</div>
-                  <div className="info-grid-subtitle">de Festa</div>
+                  <div className="info-grid-subtitle">de Open Bar</div>
                 </div>
               </div>
             </div>
