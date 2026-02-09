@@ -66,9 +66,17 @@ const VideoSection = () => {
 
     const video = html5VideoRef.current;
     let hasStarted = false;
+    let pauseCheckInterval = null;
 
     const handlePlay = () => {
       setIsVideoPlaying(true);
+    };
+
+    const handlePause = () => {
+      // Se o vídeo foi pausado (exceto quando realmente terminou), retoma
+      if (!video.ended) {
+        video.play().catch(() => {});
+      }
     };
 
     const handleError = () => {
@@ -96,24 +104,48 @@ const VideoSection = () => {
       }
     };
 
-    // Adiciona listeners mínimos (não precisa de ended handler - loop nativo cuida disso)
+    // Monitora se o vídeo foi pausado automaticamente e retoma
+    const startPauseMonitoring = () => {
+      pauseCheckInterval = setInterval(() => {
+        if (video.paused && !video.ended && hasStarted) {
+          // Vídeo foi pausado mas não terminou - retoma
+          video.play().catch(() => {});
+        }
+      }, 1000); // Verifica a cada segundo
+    };
+
+    // Adiciona listeners
     video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
     video.addEventListener('error', handleError);
 
     // Tenta iniciar quando o vídeo está pronto
     if (video.readyState >= 2) {
       tryPlay();
+      startPauseMonitoring();
     } else {
-      video.addEventListener('loadeddata', tryPlay, { once: true });
+      video.addEventListener('loadeddata', () => {
+        tryPlay();
+        startPauseMonitoring();
+      }, { once: true });
       video.addEventListener('canplay', tryPlay, { once: true });
     }
 
     // Tenta iniciar após um pequeno delay (apenas uma vez)
-    const initTimeout = setTimeout(tryPlay, 500);
+    const initTimeout = setTimeout(() => {
+      tryPlay();
+      if (!pauseCheckInterval) {
+        startPauseMonitoring();
+      }
+    }, 500);
 
     return () => {
       clearTimeout(initTimeout);
+      if (pauseCheckInterval) {
+        clearInterval(pauseCheckInterval);
+      }
       video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
       video.removeEventListener('error', handleError);
     };
   }, [isIOS]);
@@ -190,27 +222,33 @@ const VideoSection = () => {
     }
   };
 
-  // Intersection Observer para iniciar vídeo quando entra na viewport
+  // Intersection Observer para garantir que o vídeo continue tocando mesmo ao sair da viewport
   useEffect(() => {
     if (!sectionRef.current) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !isVideoPlaying) {
+          if (entry.isIntersecting) {
+            // Quando entra na viewport, garante que está tocando
             if (isIOS && html5VideoRef.current) {
-              // Para iOS, tenta iniciar o vídeo HTML5 apenas se estiver pausado
               const video = html5VideoRef.current;
               if (video.paused || video.ended) {
                 video.play().catch(() => {});
               }
             } else if (videoRef.current) {
-              // Para outros dispositivos, tenta iniciar o YouTube apenas uma vez
+              // Para YouTube, garante que está tocando sem resetar
               setTimeout(() => {
-                forceVideoPlay();
-              }, 500);
+                if (videoRef.current?.contentWindow) {
+                  videoRef.current.contentWindow.postMessage(
+                    JSON.stringify({ event: 'command', func: 'playVideo' }),
+                    '*'
+                  );
+                }
+              }, 100);
             }
           }
+          // Não pausa quando sai da viewport - deixa o vídeo continuar tocando
         });
       },
       { threshold: 0.1 }
@@ -219,27 +257,36 @@ const VideoSection = () => {
     observer.observe(sectionRef.current);
 
     return () => observer.disconnect();
-  }, [isVideoPlaying, isIOS]);
+  }, [isIOS]);
 
 
-  // Monitora estado do YouTube apenas para atualizar isVideoPlaying (loop é nativo via URL)
+  // Monitora estado do YouTube e garante que continue tocando mesmo ao sair da viewport
   useEffect(() => {
     if (isIOS || !videoRef.current || !videoSrc) return;
 
     const iframe = videoRef.current;
+    let playCheckInterval = null;
 
-    // Listener para eventos do YouTube - apenas monitora estado, não interfere no loop
+    // Listener para eventos do YouTube - monitora estado e garante reprodução contínua
     const handleMessage = (event) => {
       if (event.origin !== 'https://www.youtube.com') return;
       
       try {
         const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         
-        // Apenas atualiza o estado de reprodução, não tenta reiniciar manualmente
-        // O loop é gerenciado pelo parâmetro loop=1 e playlist na URL do YouTube
         if (data.event === 'onStateChange') {
           if (data.info === 1) { // PLAYING
             setIsVideoPlaying(true);
+          } else if (data.info === 2) { // PAUSED
+            // Se pausou (mas não terminou), retoma para garantir reprodução contínua
+            setTimeout(() => {
+              if (iframe.contentWindow) {
+                iframe.contentWindow.postMessage(
+                  JSON.stringify({ event: 'command', func: 'playVideo' }),
+                  '*'
+                );
+              }
+            }, 100);
           }
           // Não faz nada quando ENDED - o YouTube com loop=1 e playlist reinicia automaticamente
         }
@@ -248,9 +295,26 @@ const VideoSection = () => {
       }
     };
 
+    // Monitora periodicamente se o vídeo está tocando e retoma se necessário
+    const startPlayMonitoring = () => {
+      playCheckInterval = setInterval(() => {
+        // Envia comando para garantir que está tocando (sem resetar)
+        if (iframe.contentWindow) {
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'playVideo' }),
+            '*'
+          );
+        }
+      }, 3000); // Verifica a cada 3 segundos
+    };
+
     window.addEventListener('message', handleMessage);
+    startPlayMonitoring();
 
     return () => {
+      if (playCheckInterval) {
+        clearInterval(playCheckInterval);
+      }
       window.removeEventListener('message', handleMessage);
     };
   }, [videoSrc, isIOS]);
