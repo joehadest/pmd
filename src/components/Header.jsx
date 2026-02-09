@@ -113,6 +113,13 @@ const Header = () => {
 
       {/* Menu Mobile */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
+        <button
+          className="mobile-menu-close"
+          onClick={closeMobileMenu}
+          aria-label="Fechar Menu"
+        >
+          <FaTimes />
+        </button>
         <nav className="mobile-nav">
           <ul>
             <li>

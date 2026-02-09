@@ -216,6 +216,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   box-sizing: border-box;
   /* width, margin-left e margin-right são definidos via JavaScript */
+  position: relative;
 }
 
 .hero-features-scroll {

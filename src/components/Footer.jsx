@@ -35,25 +35,7 @@ const Footer = () => {
     }
   ];
 
-  useEffect(() => {
-    const handleResize = () => {
-      const el = footerFeaturesRef.current;
-      if (!el) return;
-      
-      const vw = window.innerWidth;
-      const parent = el.parentElement;
-      const parentRect = parent?.getBoundingClientRect();
-      const parentLeft = parentRect?.left || 0;
-      
-      el.style.setProperty('width', `${vw}px`, 'important');
-      el.style.setProperty('margin-left', `-${parentLeft}px`, 'important');
-      el.style.setProperty('margin-right', `-${vw - parentLeft - (parentRect?.width || 0)}px`, 'important');
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // Removido useEffect - agora o CSS cuida do full-width sem quebrar o viewport
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -65,20 +47,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       {/* Features do Evento - Marquee Integrado */}
-      <div className="footer-features" ref={(el) => {
-        footerFeaturesRef.current = el;
-        if (el) {
-          // Aplicar ajuste inicial
-          const vw = window.innerWidth;
-          const parent = el.parentElement;
-          const parentRect = parent?.getBoundingClientRect();
-          const parentLeft = parentRect?.left || 0;
-          
-          el.style.setProperty('width', `${vw}px`, 'important');
-          el.style.setProperty('margin-left', `-${parentLeft}px`, 'important');
-          el.style.setProperty('margin-right', `-${vw - parentLeft - (parentRect?.width || 0)}px`, 'important');
-        }
-      }}>
+      <div className="footer-features" ref={footerFeaturesRef}>
         <div className="hero-features-scroll">
           <div className="hero-features-content">
             {[...sponsors, ...sponsors].map((sponsor, index) => {

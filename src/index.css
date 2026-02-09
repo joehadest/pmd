@@ -61,8 +61,13 @@
 
 /* Estilos base */
 html {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
   scroll-behavior: smooth;
   font-size: var(--font-size-base);
+  /* Previne overflow horizontal causado por 100vw */
+  box-sizing: border-box;
 }
 
 body {
@@ -75,6 +80,9 @@ body {
   background-attachment: fixed;
   line-height: 1.6;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
 }
 
 /* Tipografia */

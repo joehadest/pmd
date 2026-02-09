@@ -39,9 +39,13 @@ const HeroSection = () => {
       const parentRect = parent?.getBoundingClientRect();
       const parentLeft = parentRect?.left || 0;
       
+      // Calcula o margin-left necessário para centralizar e fazer breakout
+      const marginLeft = -parentLeft;
+      const marginRight = -(vw - parentLeft - (parentRect?.width || 0));
+      
       el.style.setProperty('width', `${vw}px`, 'important');
-      el.style.setProperty('margin-left', `-${parentLeft}px`, 'important');
-      el.style.setProperty('margin-right', `-${vw - parentLeft - (parentRect?.width || 0)}px`, 'important');
+      el.style.setProperty('margin-left', `${marginLeft}px`, 'important');
+      el.style.setProperty('margin-right', `${marginRight}px`, 'important');
     };
 
     handleResize();
@@ -141,20 +145,7 @@ const HeroSection = () => {
             </div>
 
             {/* Features do Evento - Marquee Integrado */}
-            <div className="hero-features" ref={(el) => {
-              heroFeaturesRef.current = el;
-              if (el) {
-                // Aplicar ajuste inicial
-                const vw = window.innerWidth;
-                const parent = el.parentElement;
-                const parentRect = parent?.getBoundingClientRect();
-                const parentLeft = parentRect?.left || 0;
-                
-                el.style.setProperty('width', `${vw}px`, 'important');
-                el.style.setProperty('margin-left', `-${parentLeft}px`, 'important');
-                el.style.setProperty('margin-right', `-${vw - parentLeft - (parentRect?.width || 0)}px`, 'important');
-              }
-            }}>
+            <div className="hero-features" ref={heroFeaturesRef}>
               <div className="hero-features-scroll">
                 <div className="hero-features-content">
                   {[...sponsors, ...sponsors].map((sponsor, index) => {
