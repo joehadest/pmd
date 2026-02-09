@@ -157,20 +157,23 @@ const HeroSection = () => {
             }}>
               <div className="hero-features-scroll">
                 <div className="hero-features-content">
-                  {[...sponsors, ...sponsors].map((sponsor, index) => (
-                    <div
-                      key={`${sponsor.name}-${index}`}
-                      className="hero-feature-item hero-sponsor-item"
-                      aria-label={`Patrocinador ${sponsor.name}`}
-                    >
-                      <img
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        className="hero-sponsor-logo"
-                        loading="lazy"
-                      />
-                    </div>
-                  ))}
+                  {[...sponsors, ...sponsors].map((sponsor, index) => {
+                    const isUltranetOrDaCasa = sponsor.name === 'Ultranet' || sponsor.name === 'DaCasa';
+                    return (
+                      <div
+                        key={`${sponsor.name}-${index}`}
+                        className={`hero-feature-item hero-sponsor-item ${isUltranetOrDaCasa ? 'hero-sponsor-item-extra-spacing' : ''}`}
+                        aria-label={`Patrocinador ${sponsor.name}`}
+                      >
+                        <img
+                          src={sponsor.logo}
+                          alt={sponsor.name}
+                          className="hero-sponsor-logo"
+                          loading="lazy"
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
