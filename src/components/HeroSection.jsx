@@ -6,6 +6,29 @@ import './HeroSection.css';
 const HeroSection = () => {
   const heroFeaturesRef = useRef(null);
 
+  const sponsors = [
+    {
+      name: 'Ultranet',
+      logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png'
+    },
+    {
+      name: 'DaCasa',
+      logo: '/Logos patrocinios/LOGOS DACASA.png'
+    },
+    {
+      name: 'Delta',
+      logo: '/Logos patrocinios/LOGOS DELTA.png'
+    },
+    {
+      name: 'DiskGela',
+      logo: '/Logos patrocinios/LOGOS DISKGELA.png'
+    },
+    {
+      name: 'Viva',
+      logo: '/Logos patrocinios/LOGOS VIVA.png'
+    }
+  ];
+
   useEffect(() => {
     const handleResize = () => {
       const el = heroFeaturesRef.current;
@@ -134,57 +157,20 @@ const HeroSection = () => {
             }}>
               <div className="hero-features-scroll">
                 <div className="hero-features-content">
-                  {/* Primeira sequência */}
-                  <div className="hero-feature-item">
-                    <FaBeer className="feature-icon" />
-                    <span className="feature-text">Open Bar</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaMusic className="feature-icon" />
-                    <span className="feature-text">Atrações Exclusivas</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaShieldAlt className="feature-icon" />
-                    <span className="feature-text">Segurança Total</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaEye className="feature-icon" />
-                    <span className="feature-text">Vista Privilegiada</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaBolt className="feature-icon" />
-                    <span className="feature-text">Energia Máxima</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaStar className="feature-icon" />
-                    <span className="feature-text">Experiência Única</span>
-                  </div>
-                  
-                  {/* Segunda sequência (duplicada para efeito infinito) */}
-                  <div className="hero-feature-item">
-                    <FaBeer className="feature-icon" />
-                    <span className="feature-text">Open Bar</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaMusic className="feature-icon" />
-                    <span className="feature-text">Atrações Exclusivas</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaShieldAlt className="feature-icon" />
-                    <span className="feature-text">Segurança Total</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaEye className="feature-icon" />
-                    <span className="feature-text">Vista Privilegiada</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaBolt className="feature-icon" />
-                    <span className="feature-text">Energia Máxima</span>
-                  </div>
-                  <div className="hero-feature-item">
-                    <FaStar className="feature-icon" />
-                    <span className="feature-text">Experiência Única</span>
-                  </div>
+                  {[...sponsors, ...sponsors].map((sponsor, index) => (
+                    <div
+                      key={`${sponsor.name}-${index}`}
+                      className="hero-feature-item hero-sponsor-item"
+                      aria-label={`Patrocinador ${sponsor.name}`}
+                    >
+                      <img
+                        src={sponsor.logo}
+                        alt={sponsor.name}
+                        className="hero-sponsor-logo"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

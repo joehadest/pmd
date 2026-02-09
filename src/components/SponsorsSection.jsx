@@ -3,6 +3,29 @@ import { FaHandshake, FaBullhorn, FaUsers, FaWhatsapp } from 'react-icons/fa';
 import './SponsorsSection.css';
 
 const SponsorsSection = () => {
+  const sponsors = [
+    {
+      name: 'Ultranet',
+      logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png'
+    },
+    {
+      name: 'DaCasa',
+      logo: '/Logos patrocinios/LOGOS DACASA.png'
+    },
+    {
+      name: 'Delta',
+      logo: '/Logos patrocinios/LOGOS DELTA.png'
+    },
+    {
+      name: 'DiskGela',
+      logo: '/Logos patrocinios/LOGOS DISKGELA.png'
+    },
+    {
+      name: 'Viva',
+      logo: '/Logos patrocinios/LOGOS VIVA.png'
+    }
+  ];
+
   const benefits = [
     {
       icon: <FaUsers />,
@@ -30,6 +53,26 @@ const SponsorsSection = () => {
             <p className="section-subtitle">
               Junte sua marca ao Camarote PMD 2026 e faça parte dessa história
             </p>
+          </div>
+
+          {/* Seção de Patrocinadores */}
+          <div className="sponsors-logos-section animate-fadeInUp">
+            <h3 className="sponsors-title">Nossos Patrocinadores</h3>
+            <div className="sponsors-logos-grid">
+              {sponsors.map((sponsor, index) => (
+                <div 
+                  key={index} 
+                  className="sponsor-logo-item animate-fadeInUp"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <img 
+                    src={sponsor.logo} 
+                    alt={sponsor.name}
+                    className="sponsor-logo"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Grid de Benefícios */}

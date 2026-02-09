@@ -169,6 +169,21 @@ body:not(.at-top) .scroll-to-top {
   flex-shrink: 0;
 }
 
+/* Versão com logos de patrocinadores (no lugar de texto/ícones) */
+.footer-features .hero-feature-item.hero-sponsor-item {
+  padding: 0.6rem 1.1rem;
+  gap: 0;
+  border-radius: 16px;
+}
+
+.footer-features .hero-sponsor-logo {
+  height: 30px;
+  width: auto;
+  max-width: 170px;
+  object-fit: contain;
+  filter: brightness(1.05);
+}
+
 .footer-features .hero-feature-item:nth-child(6),
 .footer-features .hero-feature-item:nth-child(12) {
   margin-right: 0;
@@ -208,6 +223,15 @@ body:not(.at-top) .scroll-to-top {
     margin-right: 0.75rem;
   }
 
+  .footer-features .hero-feature-item.hero-sponsor-item {
+    padding: 0.5rem 0.9rem;
+  }
+
+  .footer-features .hero-sponsor-logo {
+    height: 26px;
+    max-width: 145px;
+  }
+
   .footer-features .feature-icon {
     font-size: 0.85rem;
   }
@@ -225,6 +249,15 @@ body:not(.at-top) .scroll-to-top {
   .footer-features .hero-feature-item {
     padding: 0.4rem 0.8rem;
     margin-right: 0.6rem;
+  }
+
+  .footer-features .hero-feature-item.hero-sponsor-item {
+    padding: 0.45rem 0.8rem;
+  }
+
+  .footer-features .hero-sponsor-logo {
+    height: 22px;
+    max-width: 125px;
   }
 
   .footer-features .feature-icon {
