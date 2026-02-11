@@ -37,11 +37,8 @@ const TicketsSection = () => {
                 <span className="amount">230</span>
                 <span className="cents">,00</span>
               </div>
-              <div className="price-fee">
-                + R$ 23,00 (taxa online)
-              </div>
               <div className="price-total">
-                Total: <strong>R$ 253,00</strong>
+                Total: <strong>R$ 230,00</strong>
               </div>
             </div>
 
