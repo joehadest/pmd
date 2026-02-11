@@ -29,6 +29,11 @@ const LineUpSection = () => {
       name: 'PK',
       time: 'Horário a confirmar',
       photo: '/LINE UP/PK.jpeg'
+    },
+    {
+      name: 'OZ PIRAZ',
+      time: 'Horário a confirmar',
+      photo: '/LINE UP/OZ PIRAZ.png'
     }
   ];
 
