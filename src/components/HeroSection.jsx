@@ -7,26 +7,14 @@ const HeroSection = () => {
   const heroFeaturesRef = useRef(null);
 
   const sponsors = [
-    {
-      name: 'Ultranet',
-      logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png'
-    },
-    {
-      name: 'DaCasa',
-      logo: '/Logos patrocinios/LOGOS DACASA.png'
-    },
-    {
-      name: 'Delta',
-      logo: '/Logos patrocinios/LOGOS DELTA.png'
-    },
-    {
-      name: 'DiskGela',
-      logo: '/Logos patrocinios/LOGOS DISKGELA.png'
-    },
-    {
-      name: 'Viva',
-      logo: '/Logos patrocinios/LOGOS VIVA.png'
-    }
+    { name: 'Delta', logo: '/Logos patrocinios/LOGOS DELTA.png' },
+    { name: 'DaCasa', logo: '/Logos patrocinios/LOGOS DACASA.png' },
+    { name: 'Sol Maxi', logo: '/Logos patrocinios/SOL MAXI.png' },
+    { name: 'Baracho', logo: '/Logos patrocinios/BARACHO.png' },
+    { name: 'DiskGela', logo: '/Logos patrocinios/LOGOS DISKGELA.png' },
+    { name: 'Viva', logo: '/Logos patrocinios/LOGOS VIVA.png' },
+    { name: 'ITudo', logo: '/Logos patrocinios/ITUDO.png' },
+    { name: 'Ultranet', logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png' }
   ];
 
   useEffect(() => {
@@ -148,12 +136,10 @@ const HeroSection = () => {
             <div className="hero-features" ref={heroFeaturesRef}>
               <div className="hero-features-scroll">
                 <div className="hero-features-content">
-                  {[...sponsors, ...sponsors].map((sponsor, index) => {
-                    const isUltranetOrDaCasa = sponsor.name === 'Ultranet' || sponsor.name === 'DaCasa';
-                    return (
+                  {[...sponsors, ...sponsors].map((sponsor, index) => (
                       <div
                         key={`${sponsor.name}-${index}`}
-                        className={`hero-feature-item hero-sponsor-item ${isUltranetOrDaCasa ? 'hero-sponsor-item-extra-spacing' : ''}`}
+                        className="hero-feature-item hero-sponsor-item"
                         aria-label={`Patrocinador ${sponsor.name}`}
                       >
                         <img
@@ -163,8 +149,7 @@ const HeroSection = () => {
                           loading="lazy"
                         />
                       </div>
-                    );
-                  })}
+                  ))}
                 </div>
               </div>
             </div>

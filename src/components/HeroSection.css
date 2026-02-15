@@ -255,11 +255,6 @@
   padding: 0.6rem 1.1rem;
   gap: 0;
   border-radius: 16px;
-  margin-right: 2.5rem;
-}
-
-/* Espaçamento extra para logos Ultranet e DaCasa */
-.hero-feature-item.hero-sponsor-item.hero-sponsor-item-extra-spacing {
   margin-right: 3.5rem;
 }
 
@@ -269,11 +264,6 @@
   max-width: 180px;
   object-fit: contain;
   filter: brightness(1.05);
-}
-
-.hero-feature-item:nth-child(6),
-.hero-feature-item:nth-child(12) {
-  margin-right: 0;
 }
 
 .hero-feature-item:hover {
@@ -318,11 +308,7 @@
 
   .hero-feature-item.hero-sponsor-item {
     padding: 0.5rem 0.9rem;
-    margin-right: 2rem;
-  }
-
-  .hero-feature-item.hero-sponsor-item.hero-sponsor-item-extra-spacing {
-    margin-right: 2.8rem;
+    margin-right: 2.5rem;
   }
 
   .hero-sponsor-logo {
@@ -354,10 +340,6 @@
 
   .hero-feature-item.hero-sponsor-item {
     padding: 0.45rem 0.8rem;
-    margin-right: 1.5rem;
-  }
-
-  .hero-feature-item.hero-sponsor-item.hero-sponsor-item-extra-spacing {
     margin-right: 2rem;
   }
 
