@@ -38,20 +38,23 @@ const Footer = () => {
       <div className="footer-features" ref={footerFeaturesRef}>
         <div className="hero-features-scroll">
           <div className="hero-features-content">
-            {[...sponsors, ...sponsors].map((sponsor, index) => (
-                <div
-                  key={`${sponsor.name}-${index}`}
-                  className="hero-feature-item hero-sponsor-item"
-                  aria-label={`Patrocinador ${sponsor.name}`}
-                >
-                  <img
-                    src={sponsor.logo}
-                    alt={sponsor.name}
-                    className="hero-sponsor-logo"
-                    loading="lazy"
-                  />
-                </div>
-            ))}
+            {[...sponsors, ...sponsors].map((sponsor, index) => {
+                const isSmallLogo = sponsor.name === 'Baracho' || sponsor.name === 'Sol Maxi';
+                return (
+                  <div
+                    key={`${sponsor.name}-${index}`}
+                    className="hero-feature-item hero-sponsor-item"
+                    aria-label={`Patrocinador ${sponsor.name}`}
+                  >
+                    <img
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      className={`hero-sponsor-logo ${isSmallLogo ? 'hero-sponsor-logo-large' : ''}`}
+                      loading="lazy"
+                    />
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>

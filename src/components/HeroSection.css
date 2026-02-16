@@ -266,6 +266,12 @@
   filter: brightness(1.05);
 }
 
+/* Logos maiores para Baracho e Sol Maxi */
+.hero-sponsor-logo.hero-sponsor-logo-large {
+  height: 42px;
+  max-width: 220px;
+}
+
 .hero-feature-item:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
@@ -316,6 +322,11 @@
     max-width: 150px;
   }
 
+  .hero-sponsor-logo.hero-sponsor-logo-large {
+    height: 36px;
+    max-width: 190px;
+  }
+
   .feature-icon {
     font-size: 0.85rem;
   }
@@ -346,6 +357,11 @@
   .hero-sponsor-logo {
     height: 24px;
     max-width: 130px;
+  }
+
+  .hero-sponsor-logo.hero-sponsor-logo-large {
+    height: 32px;
+    max-width: 170px;
   }
 
   .feature-icon {
