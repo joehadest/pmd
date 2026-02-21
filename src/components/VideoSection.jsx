@@ -9,60 +9,86 @@ const VideoSection = () => {
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
   useEffect(() => {
-    // Detecta se é iOS/iPhone
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isIOSDevice = /iphone|ipad|ipod/.test(userAgent) || 
                        (/macintosh/.test(userAgent) && navigator.maxTouchPoints > 1);
     setIsIOS(isIOSDevice);
+  }, []);
 
-    // Se for iOS, não precisa configurar o YouTube (usará vídeo HTML5)
-    if (!isIOSDevice) {
-      // Configura a URL do vídeo do YouTube para outros dispositivos
-      const videoId = 'wOeo-zHBKMA';
-      const baseUrl = 'https://www.youtube.com/embed/';
-      const params = new URLSearchParams({
-        autoplay: '1',
-        mute: '1',
-        loop: '1',
-        playlist: videoId, // Necessário para loop funcionar
-        controls: '0',
-        modestbranding: '1',
-        rel: '0',
-        showinfo: '0',
-        iv_load_policy: '3',
-        playsinline: '1',
-        disablekb: '1',
-        fs: '0',
-        autohide: '1',
-        enablejsapi: '1',
-        origin: window.location.origin
-      });
-      
-      setVideoSrc(`${baseUrl}${videoId}?${params.toString()}`);
-    }
+  // Lazy load: só carrega o vídeo quando a secção estiver perto do ecrã (evita travar no arranque)
+  useEffect(() => {
+    if (!sectionRef.current || shouldLoadVideo) return;
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoadVideo(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: '300px', threshold: 0 }
+    );
+
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [shouldLoadVideo]);
+
+  // Só define a URL do YouTube quando o lazy load ativar (não-iOS)
+  useEffect(() => {
+    if (!shouldLoadVideo || isIOS) return;
+
+    const videoId = 'wOeo-zHBKMA';
+    const baseUrl = 'https://www.youtube.com/embed/';
+    const params = new URLSearchParams({
+      autoplay: '1',
+      mute: '1',
+      loop: '1',
+      playlist: videoId,
+      controls: '0',
+      modestbranding: '1',
+      rel: '0',
+      showinfo: '0',
+      iv_load_policy: '3',
+      playsinline: '1',
+      disablekb: '1',
+      fs: '0',
+      autohide: '1',
+      enablejsapi: '1',
+      origin: window.location.origin
+    });
+    setVideoSrc(`${baseUrl}${videoId}?${params.toString()}`);
+  }, [shouldLoadVideo, isIOS]);
+
+  // Efeito de zoom no scroll (só depois do vídeo poder estar visível; throttle leve)
+  useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      if (!sectionRef.current) return;
-      
-      const rect = sectionRef.current.getBoundingClientRect();
-      const scrollProgress = 1 - (rect.top / window.innerHeight);
-      
-      // Efeito de zoom suave baseado no scroll
-      if (scrollProgress > 0 && scrollProgress < 1) {
-        const scale = 1 + (scrollProgress * 0.1);
-        sectionRef.current.style.setProperty('--scroll-scale', scale);
-      }
+      if (!sectionRef.current || !shouldLoadVideo) return;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const scrollProgress = 1 - (rect.top / window.innerHeight);
+        if (scrollProgress > 0 && scrollProgress < 1) {
+          const scale = 1 + (scrollProgress * 0.1);
+          sectionRef.current.style.setProperty('--scroll-scale', scale);
+        }
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [shouldLoadVideo]);
 
   // Gerencia o vídeo HTML5 para iOS - usando loop nativo do HTML5
   useEffect(() => {
-    if (!isIOS || !html5VideoRef.current) return;
+    if (!isIOS || !shouldLoadVideo || !html5VideoRef.current) return;
 
     const video = html5VideoRef.current;
     let hasStarted = false;
@@ -148,7 +174,7 @@ const VideoSection = () => {
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('error', handleError);
     };
-  }, [isIOS]);
+  }, [isIOS, shouldLoadVideo]);
 
   // Detecta qualquer interação do usuário e tenta iniciar o vídeo
   useEffect(() => {
@@ -333,8 +359,10 @@ const VideoSection = () => {
         {/* Container do Vídeo */}
         <div className="video-wrapper">
           <div className="video-player autoplay">
-            {/* Para iOS/iPhone: usa vídeo HTML5 hospedado localmente */}
-            {isIOS ? (
+            {/* Só monta o vídeo quando a secção está perto (lazy load = não trava o arranque) */}
+            {!shouldLoadVideo ? (
+              <div className="video-placeholder" aria-hidden="true" />
+            ) : isIOS ? (
               <video
                 ref={html5VideoRef}
                 className="video-element video-html5"
@@ -344,14 +372,12 @@ const VideoSection = () => {
                 muted
                 playsInline
                 webkit-playsinline="true"
-                preload="auto"
+                preload="metadata"
                 style={{ pointerEvents: 'none' }}
               >
                 Seu navegador não suporta vídeo HTML5.
               </video>
-            ) : (
-              /* Para outros dispositivos: usa iframe do YouTube */
-              videoSrc && (
+            ) : videoSrc ? (
                 <>
                   <iframe
                     ref={(el) => {
@@ -382,8 +408,7 @@ const VideoSection = () => {
                     aria-hidden="true"
                   ></div>
                 </>
-              )
-            )}
+              ) : null}
           </div>
 
           {/* Caption */}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-scroll';
-import { FaTicketAlt, FaClock, FaCalendarAlt, FaInstagram } from 'react-icons/fa';
+import { FaTicketAlt, FaInstagram } from 'react-icons/fa';
 import './TicketsSection.css';
 
 const TicketsSection = () => {
@@ -11,57 +11,42 @@ const TicketsSection = () => {
         <div className="section-title animate-fadeInUp">
           <h2>Ingressos</h2>
           <p className="section-subtitle">
-            Garanta seu lugar no Camarote PMD 2026
+            As primeiras vendas do bloco já encerraram! Agora vamos para uma nova etapa.
           </p>
         </div>
 
-        {/* Card de Ingresso */}
-        <div className="tickets-container">
-          <div className="ticket-card main-ticket animate-fadeInUp">
-            {/* Badge de Pré-venda */}
-            <div className="ticket-badge">Pré-venda Ativa</div>
+        {/* Badge 1º Lote */}
+        <div className="ticket-lote-badge-wrapper animate-fadeInUp">
+          <div className="ticket-lote-badge">1º LOTE LIBERADO!</div>
+        </div>
 
-            {/* Cabeçalho */}
+        {/* Cards de Ingresso */}
+        <div className="tickets-container tickets-grid">
+          <div className="ticket-card animate-fadeInUp">
             <div className="ticket-header">
               <FaTicketAlt className="ticket-icon" />
-              <h3 className="ticket-title">
-                PRÉ VENDA - CAMAROTE PMD
-              </h3>
-              <p className="ticket-subtitle">Sábado e Domingo</p>
+              <h3 className="ticket-title">Casadinha</h3>
+              <p className="ticket-subtitle">2 pessoas · Sábado e Domingo</p>
             </div>
 
-            {/* Preço */}
             <div className="ticket-price">
               <div className="price-main">
                 <span className="currency">R$</span>
-                <span className="amount">230</span>
+                <span className="amount">420</span>
                 <span className="cents">,00</span>
               </div>
             </div>
 
-            {/* Informações do Ingresso */}
-            <div className="ticket-info">
-              <div className="info-row">
-                <FaCalendarAlt />
-                <span>28 e 29 de Março de 2026</span>
-              </div>
-              <div className="info-row">
-                <FaClock />
-                <span>Encerra em 28/03/2026 às 23:59</span>
-              </div>
-            </div>
-
-            {/* Descrição */}
             <div className="ticket-description">
               <ul className="ticket-features">
-                <li>✓ 2 DIAS de Open Bar</li>
-                <li>✓ Atrações Exclusivas</li>
-                <li>✓ Segurança Total</li>
-                <li>✓ Vista Privilegiada dos Trios</li>
+                <li>✓ 2 Abadas +</li>
+                <li>✓ 2 DIAS de Open Bar +</li>
+                <li>✓ Atrações Exclusivas +</li>
+                <li>✓ Segurança Privada +</li>
+                <li>✓ Vista Privilegiada dos Trios!</li>
               </ul>
             </div>
 
-            {/* CTA */}
             <div className="ticket-cta">
               <a 
                 href="https://outgo.com.br/camarotepmd2026"
@@ -69,22 +54,66 @@ const TicketsSection = () => {
                 rel="noopener noreferrer"
                 className="btn btn-primary btn-lg"
               >
-                Comprar Ingresso Online
+                Comprar Casadinha
               </a>
-              <p className="ticket-note">
-                Ou compre pessoalmente em nossos pontos de venda físicos
-              </p>
-              <Link
-                to="pontos-de-venda"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                className="btn btn-secondary"
-              >
-                Ver Pontos de Venda Físicos
-              </Link>
             </div>
+          </div>
+
+          <div className="ticket-card animate-fadeInUp">
+            <div className="ticket-header">
+              <FaTicketAlt className="ticket-icon" />
+              <h3 className="ticket-title">Individual</h3>
+              <p className="ticket-subtitle">1 pessoa · Sábado e Domingo</p>
+            </div>
+
+            <div className="ticket-price">
+              <div className="price-main">
+                <span className="currency">R$</span>
+                <span className="amount">250</span>
+                <span className="cents">,00</span>
+              </div>
+            </div>
+
+            <div className="ticket-description">
+              <ul className="ticket-features">
+                <li>✓ 1 Abada +</li>
+                <li>✓ 2 DIAS de Open Bar +</li>
+                <li>✓ Atrações Exclusivas +</li>
+                <li>✓ Segurança Privada +</li>
+                <li>✓ Vista Privilegiada dos Trios!</li>
+              </ul>
+            </div>
+
+            <div className="ticket-cta">
+              <a 
+                href="https://outgo.com.br/camarotepmd2026"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary btn-lg"
+              >
+                Comprar Individual
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Nota de validade do lote */}
+        <p className="ticket-lote-note animate-fadeInUp">
+          Lote válido até 05 de março ou enquanto durar!
+        </p>
+
+        <div className="tickets-container">
+          <div className="ticket-cta-secondary animate-fadeInUp">
+            <Link
+              to="pontos-de-venda"
+              spy={true}
+              smooth={true}
+              offset={-80}
+              duration={500}
+              className="btn btn-secondary"
+            >
+              Ver Pontos de Venda Físicos
+            </Link>
           </div>
 
           {/* Cards de Informações Adicionais */}
