@@ -8,6 +8,7 @@ import TicketsSection from './components/TicketsSection';
 import SalesPointsSection from './components/SalesPointsSection';
 import InstagramSection from './components/InstagramSection';
 import SponsorsSection from './components/SponsorsSection';
+import PousadaCentralSection from './components/PousadaCentralSection';
 import Footer from './components/Footer';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <InstagramSection />
         <VideoSection />
         <SponsorsSection />
+        <PousadaCentralSection />
       </main>
       <Footer />
     </div>
