@@ -188,8 +188,8 @@ body:not(.at-top) .scroll-to-top {
 
 /* Logos maiores para Baracho e Sol Maxi no footer */
 .footer-features .hero-sponsor-logo.hero-sponsor-logo-large {
-  height: 38px;
-  max-width: 210px;
+  height: 46px;
+  max-width: 250px;
 }
 
 .footer-features .hero-feature-item:hover {

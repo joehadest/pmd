@@ -11,7 +11,8 @@ const SponsorsSection = () => {
     { name: 'DiskGela', logo: '/Logos patrocinios/LOGOS DISKGELA.png' },
     { name: 'Viva', logo: '/Logos patrocinios/LOGOS VIVA.png' },
     { name: 'ITudo', logo: '/Logos patrocinios/ITUDO.png' },
-    { name: 'Ultranet', logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png' }
+    { name: 'Ultranet', logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png' },
+    { name: 'Supercola', logo: '/Logos patrocinios/SUPERCOLA.png' }
   ];
 
   const benefits = [
@@ -106,3 +107,4 @@ const SponsorsSection = () => {
 };
 
 export default SponsorsSection;
+

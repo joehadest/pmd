@@ -14,7 +14,8 @@ const HeroSection = () => {
     { name: 'DiskGela', logo: '/Logos patrocinios/LOGOS DISKGELA.png' },
     { name: 'Viva', logo: '/Logos patrocinios/LOGOS VIVA.png' },
     { name: 'ITudo', logo: '/Logos patrocinios/ITUDO.png' },
-    { name: 'Ultranet', logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png' }
+    { name: 'Ultranet', logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png' },
+    { name: 'Supercola', logo: '/Logos patrocinios/SUPERCOLA.png' }
   ];
 
   useEffect(() => {
@@ -137,7 +138,7 @@ const HeroSection = () => {
               <div className="hero-features-scroll">
                 <div className="hero-features-content">
                   {[...sponsors, ...sponsors].map((sponsor, index) => {
-                      const isSmallLogo = sponsor.name === 'Baracho' || sponsor.name === 'Sol Maxi';
+                      const isSmallLogo = sponsor.name === 'Baracho' || sponsor.name === 'Sol Maxi' || sponsor.name === 'Supercola';
                       return (
                         <div
                           key={`${sponsor.name}-${index}`}
@@ -173,4 +174,5 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
 
