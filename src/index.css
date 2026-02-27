@@ -77,7 +77,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-white);
   background: var(--gradient-hero);
-  background-attachment: fixed;
   line-height: 1.6;
   overflow-x: hidden;
   width: 100%;
@@ -296,6 +295,14 @@ a:hover {
 
 .animate-fadeInUp {
   animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-fadeInUp,
+.card,
+.header-logo img,
+.sponsor-logo-item {
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .animate-fadeIn {

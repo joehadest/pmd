@@ -53,15 +53,19 @@ const SponsorsSection = () => {
             <h3 className="sponsors-title">Nossos Patrocinadores</h3>
             <div className="sponsors-logos-grid">
               {sponsors.map((sponsor, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="sponsor-logo-item animate-fadeInUp"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <img 
                     src={sponsor.logo} 
                     alt={sponsor.name}
-                    className="sponsor-logo"
+                    className={`sponsor-logo ${
+                      ['Sol Maxi', 'Supercola', 'Mastermais', 'Autormais'].includes(sponsor.name)
+                        ? 'sponsor-logo--highlight'
+                        : ''
+                    } ${sponsor.name === 'Sol Maxi' ? 'sponsor-logo--solmax' : ''}`}
                   />
                 </div>
               ))}
