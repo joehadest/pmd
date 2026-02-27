@@ -15,7 +15,11 @@ const HeroSection = () => {
     { name: 'Viva', logo: '/Logos patrocinios/LOGOS VIVA.png' },
     { name: 'ITudo', logo: '/Logos patrocinios/ITUDO.png' },
     { name: 'Ultranet', logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png' },
-    { name: 'Supercola', logo: '/Logos patrocinios/SUPERCOLA.png' }
+    { name: 'Supercola', logo: '/Logos patrocinios/SUPERCOLA.png' },
+    { name: 'Arena', logo: '/Logos patrocinios/ARENA.png' },
+    { name: 'Autormais', logo: '/Logos patrocinios/AUTOMAIS.png' },
+    { name: 'Mastermais', logo: '/Logos patrocinios/MASTERMAIS.png' },
+    { name: 'Pousada Central', logo: '/Logos patrocinios/POUSADA CENTRAL.png' }
   ];
 
   useEffect(() => {
@@ -138,7 +142,12 @@ const HeroSection = () => {
               <div className="hero-features-scroll">
                 <div className="hero-features-content">
                   {[...sponsors, ...sponsors].map((sponsor, index) => {
-                      const isSmallLogo = sponsor.name === 'Baracho' || sponsor.name === 'Sol Maxi' || sponsor.name === 'Supercola';
+                      const isSmallLogo =
+                        sponsor.name === 'Baracho' ||
+                        sponsor.name === 'Sol Maxi' ||
+                        sponsor.name === 'Supercola' ||
+                        sponsor.name === 'Mastermais';
+                      const isSupercola = sponsor.name === 'Supercola';
                       return (
                         <div
                           key={`${sponsor.name}-${index}`}
@@ -148,7 +157,7 @@ const HeroSection = () => {
                           <img
                             src={sponsor.logo}
                             alt={sponsor.name}
-                            className={`hero-sponsor-logo ${isSmallLogo ? 'hero-sponsor-logo-large' : ''}`}
+                            className={`hero-sponsor-logo ${isSmallLogo ? 'hero-sponsor-logo-large' : ''} ${isSupercola ? 'hero-sponsor-logo-super' : ''}`}
                             loading="lazy"
                           />
                         </div>

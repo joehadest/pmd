@@ -12,7 +12,11 @@ const SponsorsSection = () => {
     { name: 'Viva', logo: '/Logos patrocinios/LOGOS VIVA.png' },
     { name: 'ITudo', logo: '/Logos patrocinios/ITUDO.png' },
     { name: 'Ultranet', logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png' },
-    { name: 'Supercola', logo: '/Logos patrocinios/SUPERCOLA.png' }
+    { name: 'Supercola', logo: '/Logos patrocinios/SUPERCOLA.png' },
+    { name: 'Arena', logo: '/Logos patrocinios/ARENA.png' },
+    { name: 'Autormais', logo: '/Logos patrocinios/AUTOMAIS.png' },
+    { name: 'Mastermais', logo: '/Logos patrocinios/MASTERMAIS.png' },
+    { name: 'Pousada Central', logo: '/Logos patrocinios/POUSADA CENTRAL.png' }
   ];
 
   const benefits = [

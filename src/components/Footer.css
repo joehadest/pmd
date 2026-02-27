@@ -192,6 +192,12 @@ body:not(.at-top) .scroll-to-top {
   max-width: 250px;
 }
 
+/* Boost extra apenas para Supercola no footer */
+.footer-features .hero-sponsor-logo.hero-sponsor-logo-super {
+  height: 52px;
+  max-width: 270px;
+}
+
 .footer-features .hero-feature-item:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
@@ -232,13 +238,18 @@ body:not(.at-top) .scroll-to-top {
   }
 
   .footer-features .hero-sponsor-logo {
-    height: 26px;
-    max-width: 145px;
+    height: 30px;
+    max-width: 165px;
   }
 
   .footer-features .hero-sponsor-logo.hero-sponsor-logo-large {
-    height: 34px;
-    max-width: 185px;
+    height: 38px;
+    max-width: 205px;
+  }
+
+  .footer-features .hero-sponsor-logo.hero-sponsor-logo-super {
+    height: 42px;
+    max-width: 225px;
   }
 
   .footer-features .feature-icon {
@@ -266,13 +277,18 @@ body:not(.at-top) .scroll-to-top {
   }
 
   .footer-features .hero-sponsor-logo {
-    height: 22px;
-    max-width: 125px;
+    height: 26px;
+    max-width: 145px;
   }
 
   .footer-features .hero-sponsor-logo.hero-sponsor-logo-large {
-    height: 30px;
-    max-width: 165px;
+    height: 34px;
+    max-width: 185px;
+  }
+
+  .footer-features .hero-sponsor-logo.hero-sponsor-logo-super {
+    height: 38px;
+    max-width: 205px;
   }
 
   .footer-features .feature-icon {
