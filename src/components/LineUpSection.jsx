@@ -34,6 +34,21 @@ const LineUpSection = () => {
       name: 'OZ PIRAZ',
       time: 'Horário a confirmar',
       photo: '/LINE UP/OZ PIRAZ.png'
+    },
+    {
+      name: 'DJ GUILHERME',
+      time: 'Horário a confirmar',
+      photo: '/LINE UP/dj guilherme.jpeg'
+    },
+    {
+      name: 'DJ IRONSIDE',
+      time: 'Horário a confirmar',
+      photo: '/LINE UP/dj ironside.jpeg'
+    },
+    {
+      name: 'LIVIA SOUZA',
+      time: 'Horário a confirmar',
+      photo: '/LINE UP/livia souza.jpeg'
     }
   ];
 
