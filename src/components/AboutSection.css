@@ -171,6 +171,22 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Banner grande do Open Bar */
+.about-openbar-banner {
+  margin-top: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  background: var(--color-dark);
+}
+
+.about-openbar-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
 .about-includes h3 {
   color: var(--color-dark);
   margin-bottom: var(--spacing-md);

@@ -125,6 +125,14 @@ const AboutSection = () => {
             </li>
           </ul>
         </div>
+
+        {/* Destaque visual do Open Bar */}
+        <div className="about-openbar-banner animate-fadeInUp">
+          <img
+            src="/openbar/OPEN BAR - CAMAROTE PMD 2026.png"
+            alt="Open Bar Camarote PMD 2026"
+          />
+        </div>
       </div>
 
       {/* Background Decorativo */}

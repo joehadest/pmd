@@ -3,6 +3,7 @@ import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import VideoSection from './components/VideoSection';
 import LineUpSection from './components/LineUpSection';
+import OpenBarSection from './components/OpenBarSection';
 import StructureSection from './components/StructureSection';
 import TicketsSection from './components/TicketsSection';
 import SalesPointsSection from './components/SalesPointsSection';
@@ -36,6 +37,7 @@ function App() {
         <HeroSection />
         <VideoSection />
         <LineUpSection />
+        <OpenBarSection />
         <StructureSection />
         <TicketsSection />
         <SalesPointsSection />
