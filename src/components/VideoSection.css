@@ -379,6 +379,24 @@
   }
 }
 
+/* Tablet / desktop médio: vídeo largura total; textos com respiro lateral */
+@media (min-width: 769px) and (max-width: 1400px) {
+  .video-container-full {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .video-header {
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+  }
+
+  .video-caption {
+    margin-left: var(--spacing-lg);
+    margin-right: var(--spacing-lg);
+  }
+}
+
 @media (max-width: 1024px) {
   .video-section {
     padding: var(--spacing-md) 0;

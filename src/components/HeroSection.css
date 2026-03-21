@@ -433,7 +433,7 @@
   .hero-right {
     display: flex;
     padding-top: 0;
-    margin-top: -5rem; /* Move a logo para cima */
+    margin-top: -10rem; /* Move a logo para cima (desktop ≥1025px) */
   }
 
   .hero-right .hero-logo {
