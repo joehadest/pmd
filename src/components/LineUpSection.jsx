@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaMusic, FaStar, FaClock } from 'react-icons/fa';
+import { FaMusic, FaStar } from 'react-icons/fa';
 import './LineUpSection.css';
 
 const LineUpSection = () => {
@@ -85,18 +85,6 @@ const LineUpSection = () => {
               </div>
             </div>
           ))}
-
-          {/* Card "Em Breve" (dentro do grid) */}
-          <div className="lineup-card coming-soon-card animate-fadeInUp" style={{ animationDelay: '0.5s' }}>
-            <div className="coming-soon-content">
-              <div className="coming-soon-icon-wrapper">
-                <FaClock className="coming-soon-icon" />
-              </div>
-              <h3>Em Breve</h3>
-              <p>Mais atrações sendo preparadas para você!</p>
-              <span className="coming-soon-badge">Aguarde</span>
-            </div>
-          </div>
         </div>
 
         {/* Nota Informativa */}
