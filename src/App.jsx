@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import VideoSection from './components/VideoSection';
@@ -11,45 +10,45 @@ import InstagramSection from './components/InstagramSection';
 import SponsorsSection from './components/SponsorsSection';
 import PousadaCentralSection from './components/PousadaCentralSection';
 import Footer from './components/Footer';
+import { ContentProvider, useContent } from './content/ContentContext';
 
-function App() {
-  useEffect(() => {
-    // Adiciona classe para controlar visibilidade do botão scroll-to-top
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        document.body.classList.remove('at-top');
-      } else {
-        document.body.classList.add('at-top');
-      }
-    };
+/** Seções na ordem do site; cada uma pode ser desligada pelo painel admin. */
+const SECTIONS = [
+  ['video', VideoSection],
+  ['lineup', LineUpSection],
+  ['openbar', OpenBarSection],
+  ['structure', StructureSection],
+  ['tickets', TicketsSection],
+  ['sales', SalesPointsSection],
+  ['instagram', InstagramSection],
+  ['sponsors', SponsorsSection],
+  ['pousada', PousadaCentralSection],
+];
 
-    // Define estado inicial
-    handleScroll();
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+function Site() {
+  const { sections, tickets } = useContent();
 
   return (
-    <div className="App">
+    <>
+      {sections.tickets && tickets.options.length > 0 && (
+        <a className="skip-link" href="#ingressos">
+          Pular para ingressos
+        </a>
+      )}
       <Header />
       <main>
         <HeroSection />
-        <VideoSection />
-        <LineUpSection />
-        <OpenBarSection />
-        <StructureSection />
-        <TicketsSection />
-        <SalesPointsSection />
-        <InstagramSection />
-        <VideoSection />
-        <SponsorsSection />
-        <PousadaCentralSection />
+        {SECTIONS.map(([key, Section]) => sections[key] && <Section key={key} />)}
       </main>
       <Footer />
-    </div>
+    </>
   );
 }
 
-export default App;
-
+export default function App() {
+  return (
+    <ContentProvider>
+      <Site />
+    </ContentProvider>
+  );
+}

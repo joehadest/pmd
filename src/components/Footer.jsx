@@ -1,109 +1,80 @@
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-scroll';
-import { 
-  FaInstagram, 
-  FaEnvelope,
-  FaMapMarkerAlt,
-  FaHeart,
-  FaArrowUp
-} from 'react-icons/fa';
+import { FiArrowUp, FiArrowUpRight } from 'react-icons/fi';
+import { FaInstagram, FaWhatsapp } from 'react-icons/fa6';
+import { navLinks as allLinks } from '../data/site';
+import { useContent } from '../content/ContentContext';
+import { useScrolled } from '../hooks/useActiveSection';
+import SponsorMarquee from './SponsorMarquee';
 import './Footer.css';
 
-const Footer = () => {
-  const footerFeaturesRef = useRef(null);
-
-  const sponsors = [
-    { name: 'Delta', logo: '/Logos patrocinios/LOGOS DELTA.png' },
-    { name: 'DaCasa', logo: '/Logos patrocinios/LOGOS DACASA.png' },
-    { name: 'Sol Maxi', logo: '/Logos patrocinios/SOL MAXI.png' },
-    { name: 'Baracho', logo: '/Logos patrocinios/BARACHO.png' },
-    { name: 'DiskGela', logo: '/Logos patrocinios/LOGOS DISKGELA.png' },
-    { name: 'Viva', logo: '/Logos patrocinios/LOGOS VIVA.png' },
-    { name: 'ITudo', logo: '/Logos patrocinios/ITUDO.png' },
-    { name: 'Ultranet', logo: '/Logos patrocinios/LOGO ULTRANET - VERTICAL.png' },
-    { name: 'Supercola', logo: '/Logos patrocinios/SUPERCOLA.png' },
-    { name: 'Arena', logo: '/Logos patrocinios/ARENA.png' },
-    { name: 'Autormais', logo: '/Logos patrocinios/AUTOMAIS.png' },
-    { name: 'Mastermais', logo: '/Logos patrocinios/MASTERMAIS.png' },
-    { name: 'Pousada Central', logo: '/Logos patrocinios/POUSADA CENTRAL.png' }
-  ];
-
-  // Removido useEffect - agora o CSS cuida do full-width sem quebrar o viewport
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
+export default function Footer() {
+  const { event, sections, sponsors } = useContent();
+  const navLinks = allLinks.filter((l) => !l.section || sections[l.section]);
+  const showTop = useScrolled(600);
 
   return (
     <footer className="footer">
-      {/* Features do Evento - Marquee Integrado */}
-      <div className="footer-features" ref={footerFeaturesRef}>
-        <div className="hero-features-scroll">
-          <div className="hero-features-content">
-            {[...sponsors, ...sponsors].map((sponsor, index) => {
-                const isSmallLogo =
-                  sponsor.name === 'Baracho' ||
-                  sponsor.name === 'Sol Maxi' ||
-                  sponsor.name === 'Supercola' ||
-                  sponsor.name === 'Mastermais';
-                const isSupercola = sponsor.name === 'Supercola';
-                return (
-                  <div
-                    key={`${sponsor.name}-${index}`}
-                    className="hero-feature-item hero-sponsor-item"
-                    aria-label={`Patrocinador ${sponsor.name}`}
-                  >
-                    <img
-                      src={sponsor.logo}
-                      alt={sponsor.name}
-                      className={`hero-sponsor-logo ${isSmallLogo ? 'hero-sponsor-logo-large' : ''} ${isSupercola ? 'hero-sponsor-logo-super' : ''}`}
-                      loading="lazy"
-                    />
-                  </div>
-                );
-              })}
-          </div>
+      {sponsors.length > 0 && (
+        <div className="footer__sponsors">
+          <SponsorMarquee label={`Patrocinadores do ${event.name}`} />
+        </div>
+      )}
+
+      <div className="container footer__grid">
+        <div className="footer__brand">
+          <img src="/img/brand/selo-pmd-2026-320.webp" alt={event.name} width="96" height="96" loading="lazy" />
+          {event.footerAbout && <p>{event.footerAbout}</p>}
+        </div>
+
+        <nav aria-label="Rodapé">
+          <h2 className="footer__title">Navegue</h2>
+          <ul role="list">
+            {navLinks.map(({ id, label }) => (
+              <li key={id}>
+                <a href={`#${id}`}>{label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div>
+          <h2 className="footer__title">Contato</h2>
+          <ul role="list" className="footer__contact">
+            <li>
+              <a href={event.instagram.url} target="_blank" rel="noopener noreferrer">
+                <FaInstagram aria-hidden="true" /> {event.instagram.handle}
+              </a>
+            </li>
+            <li>
+              <a href={event.commercialWhatsapp} target="_blank" rel="noopener noreferrer">
+                <FaWhatsapp aria-hidden="true" /> Comercial / parcerias
+              </a>
+            </li>
+            <li>
+              <a href={event.ticketsUrl} target="_blank" rel="noopener noreferrer">
+                <FiArrowUpRight aria-hidden="true" /> Vendas online
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
 
-      <div className="container">
-        {/* Footer Content */}
-        <div className="footer-content">
-          <h3 className="footer-title">Camarote PMD 2026</h3>
-          
-          <div className="footer-social">
-            <a 
-              href="https://instagram.com/podemangardeu" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="social-link"
-            >
-              <FaInstagram />
-            </a>
-          </div>
-          
-          <p className="footer-copyright">
-            © 2026 Pode Mangar Deu. Todos os direitos reservados.
-          </p>
-        </div>
+      <div className="container footer__bottom">
+        <p>© {new Date().getFullYear()} Pode Mangar Deu. Todos os direitos reservados.</p>
+        <p>
+          {event.edition} · {event.city}/{event.state}
+        </p>
       </div>
 
-      {/* Scroll to Top Button */}
-      <button 
-        className="scroll-to-top"
-        onClick={scrollToTop}
+      <button
+        type="button"
+        className="to-top"
+        data-visible={showTop || undefined}
+        onClick={() => window.scrollTo({ top: 0 })}
         aria-label="Voltar ao topo"
+        tabIndex={showTop ? 0 : -1}
       >
-        <FaArrowUp />
+        <FiArrowUp />
       </button>
     </footer>
   );
-};
-
-export default Footer;
-
-
+}

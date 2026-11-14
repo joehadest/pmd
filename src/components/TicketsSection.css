@@ -1,457 +1,169 @@
-.tickets-section {
-  position: relative;
-  background: transparent;
-  color: var(--color-white);
-  overflow: hidden;
+.tickets {
+  background:
+    radial-gradient(50rem 30rem at 50% 30%, rgb(246 178 62 / 0.08), transparent 70%);
 }
 
-.tickets-section .section-title h2,
-.tickets-section .section-subtitle {
-  color: var(--color-white);
+/* Indicador "ao vivo" no rótulo do lote */
+.tickets__live {
+  color: var(--mint);
+  background: rgb(46 230 166 / 0.08);
+  border-color: rgb(46 230 166 / 0.3);
+
+  &::before {
+    animation: pulse-dot 1.6s ease-in-out infinite;
+  }
 }
 
-/* Container */
-.tickets-container {
+@keyframes pulse-dot {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.75);
+  }
+}
+
+.tickets__grid {
   display: grid;
-  gap: var(--spacing-md);
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-/* Grid dos dois cards (Casadinha + Individual) */
-.tickets-container.tickets-grid {
-  grid-template-columns: repeat(2, 1fr);
-  max-width: 1000px;
-  margin-bottom: var(--spacing-md);
-}
-
-/* Wrapper para centralizar o badge */
-.ticket-lote-badge-wrapper {
-  width: 100%;
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
-}
-
-/* Badge 1º Lote Liberado */
-.ticket-lote-badge {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--color-primary);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  padding: 0.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-primary);
-  display: inline-block;
-  max-width: 400px;
-}
-
-/* Nota de validade do lote */
-.ticket-lote-note {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: var(--spacing-lg);
-}
-
-.ticket-cta-secondary {
-  display: flex;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 420px));
   justify-content: center;
-  margin-bottom: var(--spacing-md);
+  align-items: stretch;
+  gap: clamp(1rem, 3vw, 2rem);
 }
 
-/* Card Principal de Ingresso */
-.ticket-card {
-  background: var(--color-white);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-xl);
+.ticket {
   position: relative;
-  overflow: hidden;
-  color: var(--color-dark);
-}
-
-.ticket-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 6px;
-  background: var(--gradient-accent);
-}
-
-/* Badge */
-.ticket-badge {
-  position: absolute;
-  top: 20px;
-  right: -35px;
-  background: var(--color-primary);
-  color: var(--color-white);
-  padding: 0.5rem 3rem;
-  font-weight: 700;
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transform: rotate(45deg);
-  box-shadow: var(--shadow-md);
-}
-
-/* Header */
-.ticket-header {
-  text-align: center;
-  margin-bottom: var(--spacing-md);
-  padding-top: var(--spacing-sm);
-}
-
-.ticket-icon {
-  font-size: 3rem;
-  color: var(--color-secondary);
-  margin-bottom: var(--spacing-sm);
-}
-
-.ticket-title {
-  font-size: var(--font-size-2xl);
-  color: var(--color-dark);
-  margin-bottom: var(--spacing-xs);
-}
-
-.ticket-subtitle {
-  font-size: var(--font-size-lg);
-  color: var(--color-secondary);
-  font-weight: 600;
-}
-
-/* Preço */
-.ticket-price {
-  text-align: center;
-  padding: var(--spacing-md) 0;
-  border-top: 2px dashed var(--color-accent);
-  border-bottom: 2px dashed var(--color-accent);
-  margin-bottom: var(--spacing-md);
-}
-
-.price-main {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0.25rem;
-  margin-bottom: var(--spacing-sm);
-}
-
-.currency {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: var(--color-secondary);
-  margin-top: 0.5rem;
-}
-
-.amount {
-  font-size: 4rem;
-  font-weight: 900;
-  color: var(--color-primary);
-  line-height: 1;
-}
-
-.cents {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: var(--color-primary);
-  margin-top: 0.5rem;
-}
-
-.price-fee {
-  font-size: var(--font-size-base);
-  color: #666;
-  margin-bottom: var(--spacing-xs);
-}
-
-.price-total {
-  font-size: var(--font-size-lg);
-  color: var(--color-dark);
-  font-weight: 600;
-}
-
-.price-total strong {
-  color: var(--color-secondary);
-  font-weight: 700;
-}
-
-/* Informações */
-.ticket-info {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.025));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  transition:
+    transform 0.5s var(--ease-out),
+    border-color 0.3s;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Borda em gradiente no destaque */
+  &[data-featured] {
+    border-color: transparent;
+    background:
+      linear-gradient(180deg, #13246a, #0b1850) padding-box,
+      linear-gradient(160deg, var(--gold), rgb(246 178 62 / 0.15) 40%, var(--sky)) border-box;
+    box-shadow:
+      var(--shadow),
+      0 30px 90px -40px rgb(246 178 62 / 0.55);
+  }
+
+  & header h3 {
+    font-size: var(--step-2);
+    font-weight: 750;
+  }
+
+  & header p {
+    margin-top: 0.35rem;
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
 }
 
-.info-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm);
-  background: var(--color-light-bg);
-  border-radius: var(--radius-sm);
-  font-weight: 500;
-}
-
-.info-row svg {
-  color: var(--color-secondary);
-  font-size: 1.25rem;
-  flex-shrink: 0;
-}
-
-/* Descrição */
-.ticket-description {
-  margin-bottom: var(--spacing-md);
-}
-
-.ticket-description p {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: var(--spacing-sm);
-}
-
-.ticket-features {
-  list-style: none;
-  padding: 0;
-  margin: var(--spacing-sm) 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-xs);
-}
-
-.ticket-features li {
-  color: var(--color-secondary);
-  font-weight: 600;
-  padding: 0.5rem;
-  background: var(--color-light-bg);
-  border-radius: var(--radius-sm);
-  font-size: 0.95rem;
-}
-
-/* CTA */
-.ticket-cta {
-  text-align: center;
-}
-
-.ticket-cta .btn {
-  width: 100%;
-  margin-bottom: var(--spacing-sm);
-  font-size: 1.25rem;
-  padding: 1.25rem;
-  display: block;
-  text-decoration: none;
-}
-
-.ticket-cta .btn-secondary {
-  font-size: 1rem;
-  padding: 1rem;
-  margin-top: var(--spacing-sm);
-}
-
-.ticket-note {
-  font-size: 0.95rem;
-  color: var(--color-secondary);
-  font-weight: 600;
-  margin: var(--spacing-sm) 0;
-}
-
-/* Cards de Informação */
-.info-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-md);
-}
-
-.info-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  text-align: center;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  transition: all var(--transition-normal);
-}
-
-.info-card:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-4px);
-  border-color: var(--color-primary);
-}
-
-.info-card-icon {
-  font-size: 2.5rem;
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-sm);
-}
-
-.info-card h4 {
-  color: var(--color-white);
-  margin-bottom: var(--spacing-xs);
-}
-
-.info-card p {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.95rem;
-  margin-bottom: var(--spacing-sm);
-}
-
-.info-link {
-  display: inline-block;
-  color: var(--color-primary);
-  font-weight: 700;
-  padding: 0.75rem 1.5rem;
-  background: var(--color-white);
-  border-radius: var(--radius-full);
-  transition: all var(--transition-fast);
-}
-
-.info-link:hover {
-  background: var(--color-primary);
-  color: var(--color-white);
-  transform: scale(1.05);
-}
-
-/* Disclaimer */
-.tickets-disclaimer {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  border: 2px solid var(--color-primary);
-  margin-top: var(--spacing-lg);
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.tickets-disclaimer h4 {
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-sm);
-  font-size: var(--font-size-xl);
-}
-
-.tickets-disclaimer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tickets-disclaimer ul li {
-  padding: var(--spacing-xs) 0;
-  padding-left: 1.5rem;
-  position: relative;
-  color: rgba(255, 255, 255, 0.95);
-  line-height: 1.6;
-}
-
-.tickets-disclaimer ul li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: var(--color-primary);
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-
-/* Background Shapes */
-.tickets-background {
+.ticket__tag {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
+  right: 1.5rem;
+  translate: 0 -50%;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-gold);
+  background: linear-gradient(180deg, #ffc35c, var(--gold-strong));
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 20px -6px rgb(246 178 62 / 0.6);
 }
 
-.bg-shape {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.1;
+.ticket__price {
+  display: grid;
+  gap: 0.2rem;
+  padding-block: 1.25rem;
+  border-block: 1px dashed var(--border-strong);
 }
 
-.bg-shape-1 {
-  width: 400px;
-  height: 400px;
-  background: var(--color-primary);
-  top: -100px;
-  right: -100px;
-  animation: float 8s ease-in-out infinite;
+.ticket__value {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 2rem + 2vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
 }
 
-.bg-shape-2 {
-  width: 300px;
-  height: 300px;
-  background: var(--color-accent);
-  bottom: -50px;
-  left: -50px;
-  animation: float 6s ease-in-out infinite reverse;
+.ticket__per {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--gold);
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .tickets-container.tickets-grid {
-    grid-template-columns: 1fr;
+.ticket__perks {
+  display: grid;
+  gap: 0.75rem;
+  flex: 1;
+
+  & li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    line-height: 1.4;
   }
 
-  .ticket-lote-badge {
-    font-size: 1.2rem;
-    padding: 0.6rem 1rem;
-  }
-
-  .ticket-card {
-    padding: var(--spacing-md);
-  }
-
-  .ticket-title {
-    font-size: var(--font-size-xl);
-  }
-
-  .amount {
-    font-size: 3rem;
-  }
-
-  .ticket-features {
-    grid-template-columns: 1fr;
-  }
-
-  .info-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .tickets-disclaimer {
-    padding: var(--spacing-sm);
+  & svg {
+    flex-shrink: 0;
+    width: 1.35rem;
+    height: 1.35rem;
+    padding: 0.2rem;
+    color: var(--mint);
+    background: rgb(46 230 166 / 0.12);
+    border-radius: 50%;
   }
 }
 
-@media (max-width: 480px) {
-  .ticket-badge {
-    font-size: 0.75rem;
-    padding: 0.4rem 2.5rem;
+.tickets__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem 2rem;
+  margin-top: 2.5rem;
+  font-size: var(--step--1);
+  color: var(--text-muted);
+
+  & p,
+  & a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  .ticket-icon {
-    font-size: 2rem;
-  }
+  & a {
+    color: var(--sky);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgb(109 217 248 / 0.35);
+    text-underline-offset: 4px;
+    transition: text-decoration-color 0.2s;
 
-  .ticket-title {
-    font-size: var(--font-size-lg);
-  }
-
-  .currency,
-  .cents {
-    font-size: var(--font-size-xl);
-  }
-
-  .amount {
-    font-size: 2.5rem;
+    &:hover {
+      text-decoration-color: currentColor;
+    }
   }
 }
 
+@media (max-width: 720px) {
+  .tickets__grid {
+    grid-template-columns: minmax(0, 460px);
+  }
+}

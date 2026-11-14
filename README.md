@@ -1,73 +1,87 @@
-# Landing Page - Camarote PMD 2026
+# Camarote PMD 2026 — Site + painel admin
 
-Landing page oficial do Camarote PMD para o Alto Folia 2026.
+Site oficial do Camarote PMD no Alto Folia 2026 (Alto do Rodrigues/RN), do Bloco **Pode Mangar Deu** ([@podemangardeu](https://instagram.com/podemangardeu)), com painel administrativo em **/admin** para editar todo o conteúdo sem mexer no código.
 
-## 🎉 Sobre o Evento
+## Stack
 
-**CAMAROTE PMD - ALTO FOLIA 2026**
-- **Data:** 28 e 29 de Março de 2026
-- **Local:** Alto do Rodrigues, RN
-- **Produtor:** Pode Mangar Deu (@podemangardeu)
+- **React 19** + **Vite 8** + **React Router 7**
+- **Supabase**: banco Postgres, login, armazenamento de imagens e regras de segurança (RLS)
+- CSS moderno sem framework: `@layer`, nesting nativo, `clamp()`, `:has()`, scroll-driven animations, `<dialog>` nativo
+- Fontes self-hosted via Fontsource (**Unbounded** e **Inter**), ícones `react-icons`
+- Painel: `@dnd-kit` (arrastar para reordenar) e `sonner` (avisos)
 
-## 🚀 Tecnologias
-
-- React 18
-- Vite
-- React Icons
-- React Scroll
-
-## 📦 Instalação
+## Comandos
 
 ```bash
-# Instalar dependências
-npm install
-
-# Executar em modo desenvolvimento
-npm run dev
-
-# Build para produção
-npm run build
-
-# Preview do build
-npm run preview
+npm install        # instala dependências (Node 20.19+)
+npm run dev        # servidor de desenvolvimento
+npm run build      # build de produção em dist/
+npm run preview    # testa o build localmente
+npm run images     # regenera as imagens otimizadas de public/img
 ```
 
-## 🖼️ Adicionar Imagens e Vídeo
+## Painel admin (/admin)
 
-Para adicionar as imagens e vídeo da landing page:
+| Página | O que edita |
+|---|---|
+| Visão geral | Resumo, contadores, seções visíveis e últimas alterações |
+| Evento e textos | Nome, datas, local, textos do topo, vídeo, contatos, Pousada, rodapé e **ligar/desligar seções** |
+| Line-up | Atrações (cartaz, nome, horário, confirmado/em breve) |
+| Open Bar | Cartaz e lista de bebidas |
+| Estrutura | Galeria de fotos (envio de várias de uma vez) |
+| Ingressos | Lote atual, validade, link de vendas e tipos de ingresso (preço, benefícios, destaque) |
+| Pontos de venda | Lojas agrupadas por cidade |
+| Patrocinadores | Logos, com ajuste de tamanho e prévia |
+| Atividade | Histórico de quem alterou o quê |
+| Minha conta | Troca de senha |
 
-1. Navegue até a pasta `public/images/`
-2. Leia o arquivo `README.md` nessa pasta para instruções detalhadas
-3. Adicione:
-   - Logo PMD (200x80px)
-   - **Vídeo promocional** (YouTube/Vimeo ou MP4 local - 1920x1080px) 🎥
-   - Fotos para a galeria (6-8 imagens de 800x600px)
-   - Imagem de fundo hero (opcional, 1920x1080px)
+Em todas as listas dá para **arrastar para reordenar**, **ocultar sem excluir**, buscar, editar e excluir. Imagens enviadas são **redimensionadas e convertidas para WebP no navegador** antes do upload (logos também têm a borda transparente recortada).
 
-## 🎨 Paleta de Cores
+### Como o site usa o banco
 
-- **Laranja Ouro:** #F3AC3C
-- **Azul Celeste:** #6DD9F8
-- **Azul Azure:** #3B95F7
-- **Azul Real:** #184196
-- **Branco:** #FFFFFF
+O site carrega o conteúdo do Supabase ao abrir. Enquanto carrega — ou se o banco estiver fora do ar — ele mostra a última versão salva no navegador ou o conteúdo padrão de `src/data/site.js`. Ou seja, o site nunca fica em branco.
 
-## 📱 Responsividade
+### Configuração (uma vez)
 
-O site é totalmente responsivo e otimizado para:
-- Mobile (320px+)
-- Tablet (768px+)
-- Desktop (1024px+)
+1. **Variáveis de ambiente** — copie `.env.example` para `.env.local` e preencha a *publishable key* (Supabase → Project Settings → API). Cadastre as mesmas variáveis na Vercel.
+2. **Banco** — rode, nesta ordem, no SQL Editor do Supabase (ou pelo MCP do Supabase):
+   - `supabase/migrations/20261114120000_painel_admin.sql` — tabelas, segurança, bucket de imagens e log
+   - `supabase/seed.sql` — conteúdo atual do site
+3. **Primeiro administrador** — em Authentication → Users, crie o usuário (e-mail + senha) e depois rode:
 
-## 🌐 Deploy
+   ```sql
+   insert into public.admins (user_id)
+   select id from auth.users where email = 'seu-email@exemplo.com';
+   ```
 
-O projeto está pronto para deploy em:
-- Vercel
-- Netlify
-- GitHub Pages
-- Qualquer serviço que suporte aplicações React/Vite
+4. Recomendado: em Authentication → Sign In / Providers, **desative "Allow new users to sign up"** — o acesso ao painel já depende da tabela `admins`, mas assim ninguém cria conta à toa. Em Authentication → URL Configuration, adicione `https://SEU-DOMINIO/admin/redefinir-senha` às Redirect URLs (recuperação de senha).
 
-## 📄 Licença
+### Segurança
+
+- Leitura pública só do que está **ativo**; escrita só para quem está na tabela `admins` (RLS em todas as tabelas e no bucket `site-media`).
+- A *publishable key* pode ficar no front-end. **Nunca** coloque a `service_role`/secret key no projeto.
+
+## Imagens fixas do site
+
+Selo, imagens iniciais e vídeo ficam em `public/`. Para regenerar as versões otimizadas a partir dos originais em `assets/source/`, rode `npm run images`. Conteúdo novo deve ser enviado pelo painel.
+
+## Estrutura
+
+```
+supabase/migrations/   esquema do banco (tabelas, RLS, storage, log)
+supabase/seed.sql      conteúdo inicial
+src/data/site.js       conteúdo padrão + conversão dos dados do banco
+src/content/           carregamento do conteúdo (Supabase + cache + reserva)
+src/components/        seções do site
+src/admin/             painel admin (páginas, componentes, upload de mídia)
+src/styles/global.css  design system do site
+assets/source/         imagens originais (não vão para o site)
+```
+
+## Deploy
+
+Vercel (`vercel.json` com cache longo para assets e reescrita de rotas para o `/admin` funcionar ao recarregar). Lembre de cadastrar `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` nas variáveis de ambiente do projeto.
+
+---
 
 © 2026 Pode Mangar Deu. Todos os direitos reservados.
-

@@ -1,54 +1,27 @@
-import React from 'react';
-import { FaInstagram, FaExternalLinkAlt } from 'react-icons/fa';
+import { FiArrowUpRight } from 'react-icons/fi';
+import { FaInstagram } from 'react-icons/fa6';
+import { useContent } from '../content/ContentContext';
 import './InstagramSection.css';
 
-const InstagramSection = () => {
-
+export default function InstagramSection() {
+  const { event } = useContent();
   return (
-    <section id="instagram" className="instagram-section section">
+    <section id="instagram" className="insta section" aria-labelledby="insta-title">
       <div className="container">
-        {/* Título da Seção */}
-        <div className="section-title animate-fadeInUp">
-          <FaInstagram className="instagram-logo" />
-          <h2>Siga @podemangardeu</h2>
-          <p className="section-subtitle">
-            Acompanhe as novidades e bastidores do Camarote PMD
-          </p>
-        </div>
-
-        {/* Instagram Handle - Destaque Principal */}
-        <div className="instagram-handle animate-fadeInUp">
-          <a 
-            href="https://instagram.com/podemangardeu" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="instagram-link"
-          >
+        <div className="insta__card reveal">
+          <div className="insta__icon" aria-hidden="true">
             <FaInstagram />
-            <span>@podemangardeu</span>
-            <FaExternalLinkAlt className="external-icon" />
-          </a>
-        </div>
-
-        {/* Call to Action */}
-        <div className="instagram-cta animate-fadeInUp">
-          <p className="cta-description">
-            Acompanhe todas as novidades, bastidores e informações exclusivas do Camarote PMD 2026!
-          </p>
-          <a 
-            href="https://instagram.com/podemangardeu" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="btn btn-primary btn-lg instagram-btn"
-          >
-            <FaInstagram />
+          </div>
+          <div className="insta__text">
+            <h2 id="insta-title">Siga {event.instagram.handle}</h2>
+            <p>Novidades, bastidores e informações exclusivas do Camarote PMD 2026 em primeira mão.</p>
+          </div>
+          <a href={event.instagram.url} target="_blank" rel="noopener noreferrer" className="btn btn--lg insta__btn">
             Seguir no Instagram
+            <FiArrowUpRight className="icon-shift" aria-hidden="true" />
           </a>
         </div>
       </div>
     </section>
   );
-};
-
-export default InstagramSection;
-
+}

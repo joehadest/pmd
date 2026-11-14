@@ -2,29 +2,92 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Camarote PMD - Alto Folia 2026. Open bar, atrações e vista privilegiada. Garanta seu ingresso!" />
-    <meta name="keywords" content="Camarote PMD, Alto Folia, Carnaval, Alto do Rodrigues, RN" />
-    
-    <!-- Favicons -->
-    <link rel="icon" type="image/x-icon" href="/favicon/favicon_io/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon_io/favicon-16x16.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Camarote PMD 2026 · Alto Folia — Open bar, atrações e vista privilegiada</title>
+    <meta
+      name="description"
+      content="Camarote PMD no Alto Folia 2026, em Alto do Rodrigues/RN. 28 e 29 de março com 2 dias de open bar, line-up exclusivo e a melhor vista dos trios. Garanta seu ingresso!"
+    />
+    <meta name="theme-color" content="#06103a" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="canonical" href="https://www.camarotepmd.com.br/" />
+
+    <!-- Open Graph / redes sociais -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Camarote PMD" />
+    <meta property="og:title" content="Camarote PMD 2026 · Alto Folia" />
+    <meta
+      property="og:description"
+      content="2 dias de open bar, line-up exclusivo e vista privilegiada dos trios. 28 e 29 de março em Alto do Rodrigues/RN."
+    />
+    <meta property="og:url" content="https://www.camarotepmd.com.br/" />
+    <meta property="og:image" content="https://www.camarotepmd.com.br/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Selo Camarote PMD 2026" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Ícones -->
+    <link rel="icon" href="/favicon/favicon_io/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon_io/favicon-32x32.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/favicon_io/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/favicon/favicon_io/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/favicon_io/site.webmanifest" />
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <title>Camarote PMD - Alto Folia 2026</title>
-    <!-- YouTube IFrame API para controle programático do vídeo -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- Imagem principal do hero carregada com prioridade -->
+    <link rel="preload" as="image" href="/img/brand/selo-pmd-2026-640.webp" fetchpriority="high" />
+
+    <!-- Dados estruturados (Google: rich results de evento) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Camarote PMD 2026 — Alto Folia",
+        "description": "Camarote do Bloco Pode Mangar Deu no Alto Folia 2026, com 2 dias de open bar, atrações exclusivas e vista privilegiada dos trios.",
+        "startDate": "2026-03-28",
+        "endDate": "2026-03-29",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "image": ["https://www.camarotepmd.com.br/og-image.jpg"],
+        "location": {
+          "@type": "Place",
+          "name": "Alto Folia",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Alto do Rodrigues",
+            "addressRegion": "RN",
+            "postalCode": "59507-000",
+            "addressCountry": "BR"
+          }
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "Pode Mangar Deu",
+          "url": "https://instagram.com/podemangardeu"
+        },
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Casadinha (2 pessoas)",
+            "price": "420.00",
+            "priceCurrency": "BRL",
+            "url": "https://outgo.com.br/camarotepmd2026",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Individual",
+            "price": "250.00",
+            "priceCurrency": "BRL",
+            "url": "https://outgo.com.br/camarotepmd2026",
+            "availability": "https://schema.org/InStock"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-

@@ -1,429 +1,133 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { FiArrowRight, FiPause, FiPlay, FiVolume2, FiVolumeX } from 'react-icons/fi';
+import { useContent } from '../content/ContentContext';
 import './VideoSection.css';
 
-const VideoSection = () => {
-  const videoRef = useRef(null);
-  const html5VideoRef = useRef(null);
+/** Brilho de 4 pontas, o mesmo do logo PMD. */
+const Sparkle = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 0c.8 6.4 5.6 11.2 12 12-6.4.8-11.2 5.6-12 12-.8-6.4-5.6-11.2-12-12C6.4 11.2 11.2 6.4 12 0Z" />
+  </svg>
+);
+
+/** Faixa estilo cartaz PMD com texto correndo (decorativa). */
+function Ribbon({ items, variant }) {
+  const group = [...items, ...items, ...items];
+  return (
+    <div className={`ribbon ribbon--${variant}`} aria-hidden="true">
+      <div className="ribbon__track">
+        {[0, 1].map((copy) => (
+          <div className="ribbon__group" key={copy}>
+            {group.map((text, i) => (
+              <span key={i}>
+                {text}
+                <Sparkle />
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Vídeo da última edição em faixa de ponta a ponta da tela.
+ * - Só baixa o arquivo quando a seção se aproxima da tela (lazy load).
+ * - Toca sozinho (mudo) enquanto visível e pausa fora da tela, economizando bateria/dados.
+ * - Respeita "reduzir movimento": nesse caso não toca automaticamente.
+ */
+export default function VideoSection() {
+  const { event } = useContent();
+  const ribbonTop = [event.name, event.edition, event.organizer, event.dates.label].filter(Boolean);
+  const ribbonBottom = ['2 dias de open bar', 'Atrações exclusivas', 'Vista privilegiada', event.instagram.handle];
   const sectionRef = useRef(null);
-  const [videoSrc, setVideoSrc] = useState('');
-  const [hasUserInteracted, setHasUserInteracted] = useState(false);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const videoRef = useRef(null);
+  const [load, setLoad] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent) || 
-                       (/macintosh/.test(userAgent) && navigator.maxTouchPoints > 1);
-    setIsIOS(isIOSDevice);
-  }, []);
-
-  // Lazy load: só carrega o vídeo quando a secção estiver perto do ecrã (evita travar no arranque)
-  useEffect(() => {
-    if (!sectionRef.current || shouldLoadVideo) return;
+    const section = sectionRef.current;
+    if (!section) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShouldLoadVideo(true);
-            observer.disconnect();
-          }
-        });
+      ([entry]) => {
+        if (entry.isIntersecting) setLoad(true);
+        const video = videoRef.current;
+        if (!video || reduceMotion) return;
+        if (entry.intersectionRatio > 0.25) video.play().catch(() => {});
+        else video.pause();
       },
-      { rootMargin: '300px', threshold: 0 }
+      { rootMargin: '400px 0px', threshold: [0, 0.25, 0.6] },
     );
 
-    observer.observe(sectionRef.current);
+    observer.observe(section);
     return () => observer.disconnect();
-  }, [shouldLoadVideo]);
+  }, [load]);
 
-  // Só define a URL do YouTube quando o lazy load ativar (não-iOS)
-  useEffect(() => {
-    if (!shouldLoadVideo || isIOS) return;
-
-    const videoId = 'wOeo-zHBKMA';
-    const baseUrl = 'https://www.youtube.com/embed/';
-    const params = new URLSearchParams({
-      autoplay: '1',
-      mute: '1',
-      loop: '1',
-      playlist: videoId,
-      controls: '0',
-      modestbranding: '1',
-      rel: '0',
-      showinfo: '0',
-      iv_load_policy: '3',
-      playsinline: '1',
-      disablekb: '1',
-      fs: '0',
-      autohide: '1',
-      enablejsapi: '1',
-      origin: window.location.origin
-    });
-    setVideoSrc(`${baseUrl}${videoId}?${params.toString()}`);
-  }, [shouldLoadVideo, isIOS]);
-
-  // Efeito de zoom no scroll (só depois do vídeo poder estar visível; throttle leve)
-  useEffect(() => {
-    let ticking = false;
-    const handleScroll = () => {
-      if (!sectionRef.current || !shouldLoadVideo) return;
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const scrollProgress = 1 - (rect.top / window.innerHeight);
-        if (scrollProgress > 0 && scrollProgress < 1) {
-          const scale = 1 + (scrollProgress * 0.1);
-          sectionRef.current.style.setProperty('--scroll-scale', scale);
-        }
-        ticking = false;
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [shouldLoadVideo]);
-
-  // Gerencia o vídeo HTML5 para iOS - usando loop nativo do HTML5
-  useEffect(() => {
-    if (!isIOS || !shouldLoadVideo || !html5VideoRef.current) return;
-
-    const video = html5VideoRef.current;
-    let hasStarted = false;
-    let pauseCheckInterval = null;
-
-    const handlePlay = () => {
-      setIsVideoPlaying(true);
-    };
-
-    const handlePause = () => {
-      // Se o vídeo foi pausado (exceto quando realmente terminou), retoma
-      if (!video.ended) {
-        video.play().catch(() => {});
-      }
-    };
-
-    const handleError = () => {
-      console.warn('Erro ao carregar vídeo HTML5, tentando novamente...');
-      // Tenta recarregar o vídeo apenas uma vez
-      setTimeout(() => {
-        if (video.error) {
-          video.load();
-          video.play().catch(() => {});
-        }
-      }, 1000);
-    };
-
-    // Tenta iniciar o vídeo automaticamente apenas uma vez
-    const tryPlay = () => {
-      if (!hasStarted) {
-        hasStarted = true;
-        video.play().then(() => {
-          setIsVideoPlaying(true);
-        }).catch((error) => {
-          // Se autoplay falhar, tenta após interação do usuário
-          console.log('Autoplay bloqueado, aguardando interação do usuário...');
-          hasStarted = false; // Permite tentar novamente após interação
-        });
-      }
-    };
-
-    // Monitora se o vídeo foi pausado automaticamente e retoma
-    const startPauseMonitoring = () => {
-      pauseCheckInterval = setInterval(() => {
-        if (video.paused && !video.ended && hasStarted) {
-          // Vídeo foi pausado mas não terminou - retoma
-          video.play().catch(() => {});
-        }
-      }, 1000); // Verifica a cada segundo
-    };
-
-    // Adiciona listeners
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
-    video.addEventListener('error', handleError);
-
-    // Tenta iniciar quando o vídeo está pronto
-    if (video.readyState >= 2) {
-      tryPlay();
-      startPauseMonitoring();
-    } else {
-      video.addEventListener('loadeddata', () => {
-        tryPlay();
-        startPauseMonitoring();
-      }, { once: true });
-      video.addEventListener('canplay', tryPlay, { once: true });
-    }
-
-    // Tenta iniciar após um pequeno delay (apenas uma vez)
-    const initTimeout = setTimeout(() => {
-      tryPlay();
-      if (!pauseCheckInterval) {
-        startPauseMonitoring();
-      }
-    }, 500);
-
-    return () => {
-      clearTimeout(initTimeout);
-      if (pauseCheckInterval) {
-        clearInterval(pauseCheckInterval);
-      }
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('pause', handlePause);
-      video.removeEventListener('error', handleError);
-    };
-  }, [isIOS, shouldLoadVideo]);
-
-  // Detecta qualquer interação do usuário e tenta iniciar o vídeo
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      if (!hasUserInteracted) {
-        setHasUserInteracted(true);
-        // Tenta iniciar o vídeo após interação
-        setTimeout(() => {
-          if (isIOS && html5VideoRef.current) {
-            // Para iOS, tenta iniciar o vídeo HTML5
-            html5VideoRef.current.play().catch(() => {});
-          } else {
-            // Para outros dispositivos, usa o método do YouTube
-            forceVideoPlay();
-          }
-        }, 50);
-      }
-    };
-
-    // Eventos que indicam interação do usuário
-    const events = ['touchstart', 'touchend', 'click', 'scroll', 'mousedown', 'keydown', 'pointerdown'];
-    events.forEach(event => {
-      document.addEventListener(event, handleUserInteraction, { once: true, passive: true });
-    });
-
-    // Também tenta quando a página carrega completamente (apenas para não-iOS)
-    if (!isIOS) {
-      if (document.readyState === 'complete') {
-        setTimeout(() => {
-          forceVideoPlay();
-        }, 500);
-      } else {
-        window.addEventListener('load', () => {
-          setTimeout(() => {
-            forceVideoPlay();
-          }, 500);
-        }, { once: true });
-      }
-    }
-
-    return () => {
-      events.forEach(event => {
-        document.removeEventListener(event, handleUserInteraction);
-      });
-    };
-  }, [hasUserInteracted, isIOS]);
-
-  // Função para forçar o vídeo a tocar
-  const forceVideoPlay = () => {
-    if (!videoRef.current) return;
-
-    const iframe = videoRef.current;
-    
-    try {
-      // Múltiplas tentativas de iniciar o vídeo
-      const playCommands = [
-        { event: 'command', func: 'playVideo' },
-        { event: 'command', func: 'seekTo', args: [0, true] },
-        { event: 'command', func: 'playVideo' }
-      ];
-
-      playCommands.forEach((cmd, index) => {
-        setTimeout(() => {
-          if (iframe.contentWindow) {
-            iframe.contentWindow.postMessage(JSON.stringify(cmd), '*');
-          }
-        }, index * 200);
-      });
-    } catch (e) {
-      // Ignora erros
-    }
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) video.play().catch(() => {});
+    else video.pause();
   };
 
-  // Intersection Observer para garantir que o vídeo continue tocando mesmo ao sair da viewport
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Quando entra na viewport, garante que está tocando
-            if (isIOS && html5VideoRef.current) {
-              const video = html5VideoRef.current;
-              if (video.paused || video.ended) {
-                video.play().catch(() => {});
-              }
-            } else if (videoRef.current) {
-              // Para YouTube, garante que está tocando sem resetar
-              setTimeout(() => {
-                if (videoRef.current?.contentWindow) {
-                  videoRef.current.contentWindow.postMessage(
-                    JSON.stringify({ event: 'command', func: 'playVideo' }),
-                    '*'
-                  );
-                }
-              }, 100);
-            }
-          }
-          // Não pausa quando sai da viewport - deixa o vídeo continuar tocando
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(sectionRef.current);
-
-    return () => observer.disconnect();
-  }, [isIOS]);
-
-
-  // Monitora estado do YouTube e garante que continue tocando mesmo ao sair da viewport
-  useEffect(() => {
-    if (isIOS || !videoRef.current || !videoSrc) return;
-
-    const iframe = videoRef.current;
-    let playCheckInterval = null;
-
-    // Listener para eventos do YouTube - monitora estado e garante reprodução contínua
-    const handleMessage = (event) => {
-      if (event.origin !== 'https://www.youtube.com') return;
-      
-      try {
-        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-        
-        if (data.event === 'onStateChange') {
-          if (data.info === 1) { // PLAYING
-            setIsVideoPlaying(true);
-          } else if (data.info === 2) { // PAUSED
-            // Se pausou (mas não terminou), retoma para garantir reprodução contínua
-            setTimeout(() => {
-              if (iframe.contentWindow) {
-                iframe.contentWindow.postMessage(
-                  JSON.stringify({ event: 'command', func: 'playVideo' }),
-                  '*'
-                );
-              }
-            }, 100);
-          }
-          // Não faz nada quando ENDED - o YouTube com loop=1 e playlist reinicia automaticamente
-        }
-      } catch (e) {
-        // Ignora erros de parsing
-      }
-    };
-
-    // Monitora periodicamente se o vídeo está tocando e retoma se necessário
-    const startPlayMonitoring = () => {
-      playCheckInterval = setInterval(() => {
-        // Envia comando para garantir que está tocando (sem resetar)
-        if (iframe.contentWindow) {
-          iframe.contentWindow.postMessage(
-            JSON.stringify({ event: 'command', func: 'playVideo' }),
-            '*'
-          );
-        }
-      }, 3000); // Verifica a cada 3 segundos
-    };
-
-    window.addEventListener('message', handleMessage);
-    startPlayMonitoring();
-
-    return () => {
-      if (playCheckInterval) {
-        clearInterval(playCheckInterval);
-      }
-      window.removeEventListener('message', handleMessage);
-    };
-  }, [videoSrc, isIOS]);
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setMuted(video.muted);
+  };
 
   return (
-    <section className="video-section" ref={sectionRef}>
-      <div className="video-container-full">
-        {/* Título */}
-        <div className="video-header animate-fadeInUp">
-          <h2 className="video-title">Viva a Experiência PMD</h2>
-          <p className="video-subtitle">
-            Veja como foi a última edição do Camarote PMD
-          </p>
+    <section className="video" ref={sectionRef} aria-labelledby="video-title">
+      <div className="video__stage">
+        <Ribbon items={ribbonTop} variant="top" />
+
+        <div className="video__frame">
+          {load && (
+            <video
+              ref={videoRef}
+              src={event.videoUrl}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              onPlay={() => setPlaying(true)}
+              onPause={() => setPlaying(false)}
+              onClick={togglePlay}
+              aria-label="Vídeo da última edição do Camarote PMD"
+            />
+          )}
         </div>
 
-        {/* Container do Vídeo */}
-        <div className="video-wrapper">
-          <div className="video-player autoplay">
-            {/* Só monta o vídeo quando a secção está perto (lazy load = não trava o arranque) */}
-            {!shouldLoadVideo ? (
-              <div className="video-placeholder" aria-hidden="true" />
-            ) : isIOS ? (
-              <video
-                ref={html5VideoRef}
-                className="video-element video-html5"
-                src="/video/video%20pmd.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                webkit-playsinline="true"
-                preload="metadata"
-                style={{ pointerEvents: 'none' }}
-              >
-                Seu navegador não suporta vídeo HTML5.
-              </video>
-            ) : videoSrc ? (
-                <>
-                  <iframe
-                    ref={(el) => {
-                      videoRef.current = el;
-                      // O YouTube com autoplay=1 na URL já inicia automaticamente
-                      // Não precisa chamar forceVideoPlay() aqui para evitar múltiplas chamadas
-                    }}
-                    className="video-element"
-                    src={videoSrc}
-                    title="Camarote PMD 2026"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    playsInline
-                    webkit-playsinline="true"
-                  ></iframe>
-                  {/* Overlay invisível para tentar iniciar o vídeo automaticamente */}
-                  <div 
-                    className="video-autoplay-overlay"
-                    onClick={() => {
-                      forceVideoPlay();
-                      setHasUserInteracted(true);
-                    }}
-                    onTouchStart={() => {
-                      forceVideoPlay();
-                      setHasUserInteracted(true);
-                    }}
-                    aria-hidden="true"
-                  ></div>
-                </>
-              ) : null}
-          </div>
-
-          {/* Caption */}
-          <div className="video-caption animate-fadeInUp">
-            <p>
-              ✨ <strong>Sinta a energia</strong> do Camarote PMD e 
-              prepare-se para uma experiência ainda mais incrível em 2026!
-            </p>
+        <div className="video__content container">
+          <div className="video__text reveal">
+            <span className="eyebrow">Edição anterior</span>
+            <h2 id="video-title">
+              Viva a experiência <span className="text-gradient">PMD</span>
+            </h2>
+            <p>Sinta a energia do camarote e prepare-se para uma edição ainda mais incrível em 2026.</p>
+            <a href="#ingressos" className="btn btn--primary btn--lg">
+              Garantir meu ingresso
+              <FiArrowRight className="icon-shift" aria-hidden="true" />
+            </a>
           </div>
         </div>
+
+        <div className="video__controls">
+          <button type="button" onClick={togglePlay} aria-label={playing ? 'Pausar vídeo' : 'Reproduzir vídeo'}>
+            {playing ? <FiPause /> : <FiPlay />}
+          </button>
+          <button type="button" onClick={toggleMute} aria-label={muted ? 'Ativar som' : 'Desativar som'}>
+            {muted ? <FiVolumeX /> : <FiVolume2 />}
+          </button>
+        </div>
+
+        <Ribbon items={ribbonBottom} variant="bottom" />
       </div>
-
     </section>
   );
-};
-
-export default VideoSection;
-
+}

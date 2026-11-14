@@ -1,194 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-scroll';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { useEffect, useMemo, useState } from 'react';
+import { FiMenu, FiX, FiArrowUpRight } from 'react-icons/fi';
+import { navLinks as allLinks } from '../data/site';
+import { useContent } from '../content/ContentContext';
+import { useActiveSection, useScrolled } from '../hooks/useActiveSection';
 import './Header.css';
 
-const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export default function Header() {
+  const { event, sections } = useContent();
+  const [open, setOpen] = useState(false);
+  const scrolled = useScrolled();
+  const navLinks = useMemo(() => allLinks.filter((l) => !l.section || sections[l.section]), [sections]);
+  const sectionIds = useMemo(() => navLinks.map((l) => l.id), [navLinks]);
+  const active = useActiveSection(sectionIds);
 
+  // Trava a rolagem e permite fechar com Esc quando o menu mobile está aberto
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    if (!open) return;
+    document.documentElement.style.overflow = 'hidden';
+    const onKey = (e) => e.key === 'Escape' && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.documentElement.style.overflow = '';
+      window.removeEventListener('keydown', onKey);
     };
+  }, [open]);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  const close = () => setOpen(false);
 
   return (
-    <header className={`header ${isScrolled ? 'header-scrolled' : ''}`}>
-      <div className="container">
-        <div className="header-content">
-          {/* Logo PMD */}
-          <div className="header-logo">
-            <img 
-              src="/SELO PMD 2026.png" 
-              alt="Camarote PMD 2026"
-            />
-          </div>
+    <header className="header" data-scrolled={scrolled || undefined} data-open={open || undefined}>
+      <div className="header__bar container">
+        <a href="#inicio" className="header__brand" aria-label="Camarote PMD 2026 — início" onClick={close}>
+          <img src="/img/brand/selo-pmd-2026-320.webp" alt="" width="44" height="44" />
+          <span>
+            Camarote <strong>PMD</strong>
+          </span>
+        </a>
 
-          {/* Navegação Desktop */}
-          <nav className="header-nav desktop-nav">
-            <ul>
-              <li>
-                <Link
-                  to="inicio"
-                  spy={true}
-                  smooth={true}
-                  offset={-60}
-                  duration={500}
-                >
-                  Início
-                </Link>
+        <nav className="header__nav" aria-label="Principal">
+          <ul role="list">
+            {navLinks.map(({ id, label }) => (
+              <li key={id}>
+                <a href={`#${id}`} aria-current={active === id ? 'true' : undefined}>
+                  {label}
+                </a>
               </li>
-              <li>
-                <Link
-                  to="lineup"
-                  spy={true}
-                  smooth={true}
-                  offset={-60}
-                  duration={500}
-                >
-                  Line-Up
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="ingressos"
-                  spy={true}
-                  smooth={true}
-                  offset={-60}
-                  duration={500}
-                >
-                  Ingressos
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="pontos-de-venda"
-                  spy={true}
-                  smooth={true}
-                  offset={-60}
-                  duration={500}
-                >
-                  Pontos de Venda
-                </Link>
-              </li>
-            </ul>
-          </nav>
-
-          {/* Botão CTA Desktop */}
-          <div className="header-cta desktop-cta">
-            <Link
-              to="ingressos"
-              spy={true}
-              smooth={true}
-              offset={-80}
-              duration={500}
-              className="btn btn-primary"
-            >
-              VENDAS ONLINE
-            </Link>
-          </div>
-
-          {/* Menu Mobile Toggle */}
-          <button
-            className="mobile-menu-toggle"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle Menu"
-          >
-            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </button>
-        </div>
-      </div>
-
-      {/* Menu Mobile */}
-      <div className={`mobile-menu ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
-        <button
-          className="mobile-menu-close"
-          onClick={closeMobileMenu}
-          aria-label="Fechar Menu"
-        >
-          <FaTimes />
-        </button>
-        <nav className="mobile-nav">
-          <ul>
-            <li>
-              <Link
-                to="inicio"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                onClick={closeMobileMenu}
-              >
-                Início
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="lineup"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                onClick={closeMobileMenu}
-              >
-                Line-Up
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="ingressos"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                onClick={closeMobileMenu}
-              >
-                Ingressos
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="pontos-de-venda"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                onClick={closeMobileMenu}
-              >
-                Pontos de Venda
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="ingressos"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}
-                onClick={closeMobileMenu}
-                className="btn btn-primary"
-              >
-                VENDAS ONLINE
-              </Link>
-            </li>
+            ))}
           </ul>
         </nav>
+
+        <a
+          className="btn btn--primary header__cta"
+          href={event.ticketsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Comprar ingresso
+          <FiArrowUpRight className="icon-shift" aria-hidden="true" />
+        </a>
+
+        <button
+          type="button"
+          className="header__toggle"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? 'Fechar menu' : 'Abrir menu'}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? <FiX /> : <FiMenu />}
+        </button>
+      </div>
+
+      <div id="mobile-menu" className="mobile-menu" hidden={!open}>
+        <nav aria-label="Menu mobile">
+          <ul role="list">
+            {navLinks.map(({ id, label }, i) => (
+              <li key={id} style={{ '--i': i }}>
+                <a href={`#${id}`} onClick={close} aria-current={active === id ? 'true' : undefined}>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <a
+          className="btn btn--primary btn--lg btn--block"
+          href={event.ticketsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={close}
+        >
+          Comprar ingresso online
+          <FiArrowUpRight aria-hidden="true" />
+        </a>
       </div>
     </header>
   );
-};
-
-export default Header;
-
+}

@@ -1,104 +1,71 @@
-import React from 'react';
-import { FaMusic, FaStar } from 'react-icons/fa';
+import { FiCheck, FiClock, FiInfo } from 'react-icons/fi';
+import { useContent } from '../content/ContentContext';
 import './LineUpSection.css';
 
-const LineUpSection = () => {
-  // Atrações confirmadas
-  const lineup = [
-    {
-      name: 'BANDA PRETTA',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/BANDA PRETA.jpeg'
-    },
-    {
-      name: 'JEFF COSTA',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/JEFF COSTA.png'
-    },
-    {
-      name: 'LUCAS BOQUINHA',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/LUCAS BOQUINHA.png'
-    },
-    {
-      name: 'JP FORROZADO',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/JP FORROZADO.jpeg'
-    },
-    {
-      name: 'PK',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/PK.jpeg'
-    },
-    {
-      name: 'OZ PIRAZ',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/OZ PIRAZ.png'
-    },
-    {
-      name: 'DJ GUILHERME',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/dj guilherme.jpeg'
-    },
-    {
-      name: 'DJ IRONSIDE',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/dj ironside.jpeg'
-    },
-    {
-      name: 'LIVIA SOUZA',
-      time: 'Horário a confirmar',
-      photo: '/LINE UP/livia souza.jpeg'
-    }
-  ];
+export default function LineUpSection() {
+  const { lineup, event } = useContent();
+  const confirmed = lineup.filter((a) => a.confirmed).length;
+  const missingTimes = lineup.some((a) => !a.timeLabel);
 
   return (
-    <section id="lineup" className="lineup-section section">
+    <section id="lineup" className="lineup section" aria-labelledby="lineup-title">
       <div className="container">
-        {/* Título da Seção */}
-        <div className="section-title animate-fadeInUp">
-          <FaMusic className="title-icon" />
-          <h2>Line-Up 2026</h2>
-          <p className="section-subtitle">
-            Conheça as atrações que vão agitar o Camarote PMD
-          </p>
-        </div>
+        <header className="section-head section-head--center reveal">
+          <span className="eyebrow">
+            {confirmed} {confirmed === 1 ? 'atração confirmada' : 'atrações confirmadas'}
+          </span>
+          <h2 id="lineup-title">
+            Line-up <span className="text-gradient">2026</span>
+          </h2>
+          <p>Conheça quem vai agitar os dois dias de {event.name.replace(/\s*\d{4}$/, '')}.</p>
+        </header>
 
-        {/* Grid de Atrações */}
-        <div className="lineup-grid">
-          {lineup.map((artist, index) => (
-            <div 
-              key={index} 
-              className="lineup-card animate-fadeInUp"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="artist-photo">
-                <img src={artist.photo} alt={artist.name} />
+        <ul className="lineup__grid" role="list">
+          {lineup.map((artist) => (
+            <li key={artist.id} className="artist reveal">
+              <div className="artist__media">
+                {artist.src && (
+                  <img
+                    src={artist.src}
+                    srcSet={artist.srcSet}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 380px"
+                    alt={`${artist.name} — atração do ${event.name}`}
+                    loading="lazy"
+                    decoding="async"
+                    width="480"
+                    height="600"
+                  />
+                )}
               </div>
-              <div className="artist-info">
-                <h3 className="artist-name">{artist.name}</h3>
-                <p className="artist-time">{artist.time}</p>
-                <div className="artist-badge">
-                  <FaStar />
-                  <span>Confirmado</span>
+              <div className="artist__info">
+                <div>
+                  <h3>{artist.name}</h3>
+                  {artist.timeLabel && (
+                    <p className="artist__time">
+                      <FiClock aria-hidden="true" /> {artist.timeLabel}
+                    </p>
+                  )}
                 </div>
+                {artist.confirmed ? (
+                  <span className="artist__badge">
+                    <FiCheck aria-hidden="true" /> Confirmado
+                  </span>
+                ) : (
+                  <span className="artist__badge artist__badge--soon">Em breve</span>
+                )}
               </div>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
 
-        {/* Nota Informativa */}
-        <div className="lineup-note animate-fadeInUp">
-          <p>
-            🎵 <strong>Importante:</strong> O line-up está sujeito a alterações. 
-            Acompanhe nossas redes sociais para atualizações em tempo real!
-          </p>
-        </div>
+        <p className="note reveal">
+          <FiInfo aria-hidden="true" />
+          <span>
+            {missingTimes && <strong>Horários a confirmar. </strong>}O line-up está sujeito a
+            alterações — acompanhe nossas redes sociais para atualizações em tempo real.
+          </span>
+        </p>
       </div>
-
     </section>
   );
-};
-
-export default LineUpSection;
-
+}

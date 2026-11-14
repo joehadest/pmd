@@ -1,39 +1,39 @@
-import React from 'react';
-import { FaWhatsapp, FaHotel } from 'react-icons/fa';
+import { FiPhone } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa6';
+import { useContent } from '../content/ContentContext';
 import './PousadaCentralSection.css';
 
-const PHONE_RAW = '558435232356';
-const PHONE_DISPLAY = '+55 84 3523-2356';
-const WHATSAPP_URL = `https://wa.me/${PHONE_RAW}`;
+export default function PousadaCentralSection() {
+  const { phoneRaw, phoneDisplay } = useContent().pousada;
 
-const PousadaCentralSection = () => {
   return (
-    <section id="pousada-central" className="pousada-central-section section">
+    <section id="pousada-central" className="pousada section" aria-labelledby="pousada-title">
       <div className="container">
-        <div className="pousada-central-content animate-fadeInUp">
-          <FaHotel className="pousada-central-icon" aria-hidden="true" />
-          <h2 className="pousada-central-title">Faça sua reserva na Pousada Central</h2>
-          <a
-            href={`tel:${PHONE_RAW}`}
-            className="pousada-central-phone"
-            aria-label={`Telefone: ${PHONE_DISPLAY}`}
-          >
-            {PHONE_DISPLAY}
-          </a>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-whatsapp"
-            aria-label="Abrir conversa no WhatsApp"
-          >
-            <FaWhatsapp className="btn-whatsapp-icon" />
-            WhatsApp
-          </a>
+        <div className="pousada__card reveal">
+          <img
+            className="pousada__logo"
+            src="/img/patrocinadores/pousada-central.webp"
+            alt="Pousada Central"
+            loading="lazy"
+            width="240"
+            height="80"
+          />
+          <div className="pousada__text">
+            <span className="eyebrow">Hospedagem parceira</span>
+            <h2 id="pousada-title">Vem de fora? Faça sua reserva na Pousada Central</h2>
+          </div>
+          <div className="pousada__actions">
+            <a href={`tel:+${phoneRaw}`} className="btn btn--ghost btn--lg">
+              <FiPhone aria-hidden="true" />
+              {phoneDisplay}
+            </a>
+            <a href={`https://wa.me/${phoneRaw}`} target="_blank" rel="noopener noreferrer" className="btn btn--whatsapp btn--lg">
+              <FaWhatsapp aria-hidden="true" />
+              WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default PousadaCentralSection;
+}

@@ -1,138 +1,74 @@
-import React from 'react';
-import { FaMapMarkerAlt, FaClock, FaStore } from 'react-icons/fa';
+import { FiArrowUpRight, FiClock, FiCreditCard, FiGlobe, FiMapPin, FiNavigation } from 'react-icons/fi';
+import { useContent } from '../content/ContentContext';
 import './SalesPointsSection.css';
 
-const SalesPointsSection = () => {
-  const salesPoints = {
-    altoRodrigues: [
-      {
-        name: 'Loja PMD',
-        address: 'Av. Angelo Varela, 815, Alto do Rodrigues/RN',
-        hours: '9h às 12h / 15h às 18h',
-        icon: <FaStore />
-      },
-      {
-        name: 'DiskGela',
-        address: 'Av. Angelo Varela, 824, Alto do Rodrigues/RN',
-        hours: 'Ter. a Sáb. 18h às 0h',
-        icon: <FaStore />
-      },
-      {
-        name: 'Boutique de Luxo',
-        address: 'Av. Angelo Varela, 425 - Alto do Rodrigues/RN',
-        hours: '9h às 12h / 15h às 18h',
-        icon: <FaStore />
-      }
-    ],
-    macau: [
-      {
-        name: 'MALU STORE',
-        address: 'Rua Martins Ferreira, 401, Macau/RN',
-        hours: '9h às 12h',
-        icon: <FaStore />
-      }
-    ]
-  };
+const mapsUrl = (store, city, state) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${store.address}, ${city} - ${state}`)}`;
+
+export default function SalesPointsSection() {
+  const { salesPoints, event } = useContent();
 
   return (
-    <section id="pontos-de-venda" className="sales-points-section section">
+    <section id="pontos-de-venda" className="sales section" aria-labelledby="pontos-title">
       <div className="container">
-        {/* Título da Seção */}
-        <div className="section-title animate-fadeInUp">
-          <h2>Pontos de Venda Físicos</h2>
-          <p className="section-subtitle">
-            Garanta seu ingresso pessoalmente em uma de nossas lojas parceiras
-          </p>
+        <header className="section-head section-head--center reveal">
+          <span className="eyebrow">Compra presencial</span>
+          <h2 id="pontos-title">
+            Pontos de <span className="text-gradient">venda</span>
+          </h2>
+          <p>Garanta seu ingresso pessoalmente em uma de nossas lojas parceiras.</p>
+        </header>
+
+        <div className="sales__cities">
+          {salesPoints.map(({ city, stores }) => (
+            <div key={city} className="sales__city reveal" style={{ '--n': stores.length }}>
+              <h3>
+                <FiMapPin aria-hidden="true" />
+                {city}
+                <span>{event.state}</span>
+              </h3>
+
+              <ul className="sales__stores" role="list">
+                {stores.map((store) => (
+                  <li key={store.id} className="store">
+                    <h4>{store.name}</h4>
+                    <p>
+                      <FiMapPin aria-hidden="true" />
+                      {store.address}
+                    </p>
+                    <p>
+                      <FiClock aria-hidden="true" />
+                      {store.hours}
+                    </p>
+                    <a href={mapsUrl(store, city, event.state)} target="_blank" rel="noopener noreferrer" className="store__map">
+                      <FiNavigation aria-hidden="true" /> Como chegar
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        <div className="sales-cities">
-          {/* Alto do Rodrigues */}
-          <div className="city-section animate-fadeInUp">
-            <div className="city-header">
-              <FaMapMarkerAlt className="city-icon" />
-              <h3>Alto do Rodrigues</h3>
+        <ul className="sales__info reveal" role="list">
+          <li>
+            <FiCreditCard aria-hidden="true" />
+            <div>
+              <strong>Formas de pagamento</strong>
+              <span>Consulte as opções disponíveis em cada ponto de venda.</span>
             </div>
-            
-            <div className="sales-grid">
-              {salesPoints.altoRodrigues.map((point, index) => (
-                <div 
-                  key={index} 
-                  className="sales-card"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="card-icon">{point.icon}</div>
-                  <h4 className="store-name">{point.name}</h4>
-                  <div className="store-info">
-                    <div className="info-item">
-                      <FaMapMarkerAlt />
-                      <span>{point.address}</span>
-                    </div>
-                    <div className="info-item">
-                      <FaClock />
-                      <span>{point.hours}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+          </li>
+          <li>
+            <FiGlobe aria-hidden="true" />
+            <div>
+              <strong>Prefere comprar online?</strong>
+              <a href={event.ticketsUrl} target="_blank" rel="noopener noreferrer">
+                {event.ticketsUrlLabel} <FiArrowUpRight aria-hidden="true" />
+              </a>
             </div>
-          </div>
-
-          {/* Macau */}
-          <div className="city-section animate-fadeInUp">
-            <div className="city-header">
-              <FaMapMarkerAlt className="city-icon" />
-              <h3>Macau</h3>
-            </div>
-            
-            <div className="sales-grid">
-              {salesPoints.macau.map((point, index) => (
-                <div 
-                  key={index} 
-                  className="sales-card"
-                  style={{ animationDelay: `${(salesPoints.altoRodrigues.length + index) * 0.1}s` }}
-                >
-                  <div className="card-icon">{point.icon}</div>
-                  <h4 className="store-name">{point.name}</h4>
-                  <div className="store-info">
-                    <div className="info-item">
-                      <FaMapMarkerAlt />
-                      <span>{point.address}</span>
-                    </div>
-                    <div className="info-item">
-                      <FaClock />
-                      <span>{point.hours}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Informação Adicional */}
-        <div className="sales-note animate-fadeInUp">
-          <p>
-            💳 <strong>Formas de pagamento:</strong> Consulte as opções disponíveis em cada ponto de venda.
-          </p>
-          <p>
-            🌐 <strong>Prefere comprar online?</strong> Acesse nossa plataforma de vendas: 
-            <a 
-              href="https://outgo.com.br/camarotepmd2026" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="online-link"
-            >
-              outgo.com.br/camarotepmd2026
-            </a>
-          </p>
-          <p>
-            📞 <strong>Dúvidas?</strong> Entre em contato pelos nossos canais de atendimento.
-          </p>
-        </div>
+          </li>
+        </ul>
       </div>
     </section>
   );
-};
-
-export default SalesPointsSection;
-
+}

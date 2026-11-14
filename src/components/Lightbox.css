@@ -1,0 +1,326 @@
+/* ==========================================================================
+   Lightbox — topo / palco / miniaturas, tudo na mesma largura
+   ========================================================================== */
+
+.lightbox {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  overscroll-behavior: contain;
+
+  &::backdrop {
+    background:
+      radial-gradient(60rem 40rem at 50% 45%, rgb(24 65 150 / 0.45), transparent 70%),
+      rgb(3 8 30 / 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  &[open] {
+    animation: lb-in 0.35s var(--ease-out);
+  }
+
+  &[open]::backdrop {
+    animation: lb-fade 0.35s ease;
+  }
+}
+
+.lb {
+  --btn: 52px;
+
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(0.75rem, 2.2vh, 1.5rem);
+  width: min(100% - 2 * var(--gutter), 1440px);
+  height: 100%;
+  margin-inline: auto;
+  padding-block: max(clamp(0.75rem, 2.5vh, 1.5rem), env(safe-area-inset-top))
+    max(clamp(0.75rem, 2.5vh, 1.5rem), env(safe-area-inset-bottom));
+}
+
+/* ---------- Topo ---------- */
+.lb__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--btn);
+}
+
+.lb__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.lb__title {
+  padding: 0.35rem 0.8rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--sky);
+  background: rgb(109 217 248 / 0.08);
+  border: 1px solid rgb(109 217 248 / 0.22);
+  border-radius: var(--radius-full);
+}
+
+.lb__count {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+
+  & span {
+    color: var(--text-subtle);
+    font-weight: 500;
+  }
+}
+
+.lb__hint {
+  display: none;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+
+  & kbd {
+    min-width: 1.7rem;
+    padding: 0.15rem 0.45rem;
+    font-family: inherit;
+    font-size: 0.75rem;
+    text-align: center;
+    color: var(--text-muted);
+    background: rgb(255 255 255 / 0.06);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+  }
+
+  & kbd + kbd {
+    margin-left: -0.1rem;
+  }
+
+  & kbd:last-of-type {
+    margin-left: 0.6rem;
+  }
+}
+
+@media (hover: hover) and (min-width: 900px) {
+  .lb__hint {
+    display: flex;
+  }
+}
+
+/* ---------- Botões ---------- */
+.lb__btn {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--btn);
+  height: var(--btn);
+  font-size: 1.35rem;
+  color: #fff;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    transform 0.3s var(--ease-out);
+
+  &:hover {
+    color: var(--on-gold);
+    background: var(--gold);
+    border-color: var(--gold);
+    transform: scale(1.06);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+/* ---------- Palco: [anterior] imagem [próxima] ---------- */
+.lb__stage {
+  display: grid;
+  grid-template-columns: var(--btn) minmax(0, 1fr) var(--btn);
+  grid-template-rows: minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  min-height: 0;
+
+  [data-single] & {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.lb__media {
+  position: relative;
+  align-self: stretch;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+
+  /* Absoluto + margin:auto: a foto sempre cabe na área (vertical ou horizontal) e fica centralizada */
+  & img {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius);
+    box-shadow:
+      0 40px 100px -30px rgb(0 0 0 / 0.8),
+      0 0 0 1px rgb(255 255 255 / 0.08);
+    animation: lb-img 0.45s var(--ease-out);
+  }
+}
+
+/* ---------- Miniaturas ---------- */
+.lb__thumbs {
+  display: flex;
+  gap: 0.6rem;
+  /*
+   * Folga para o contorno dourado (2px + 2px de afastamento) e para a
+   * miniatura ativa que sobe 2px: a rolagem horizontal corta o que passar daqui.
+   */
+  padding: 10px 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* centraliza quando cabe, rola quando não cabe ("safe center") */
+  & > :first-child {
+    margin-left: auto;
+  }
+
+  & > :last-child {
+    margin-right: auto;
+  }
+
+  & button {
+    flex: 0 0 auto;
+    width: clamp(64px, 6vw, 96px);
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 10px;
+    opacity: 0.45;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    scroll-snap-align: center;
+    transition:
+      opacity 0.25s,
+      outline-color 0.25s,
+      transform 0.3s var(--ease-out);
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    &[aria-current] {
+      opacity: 1;
+      outline-color: var(--gold);
+      transform: translateY(-2px);
+    }
+  }
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* ---------- Celular: botões abaixo da imagem ---------- */
+@media (max-width: 640px) {
+  .lb {
+    --btn: 44px;
+  }
+
+  /* Imagem + setas formam um bloco centralizado: setas logo abaixo da foto */
+  .lightbox:not([data-single]) .lb__stage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'media media'
+      'prev next';
+    align-content: center;
+    row-gap: 1rem;
+  }
+
+  .lightbox:not([data-single]) .lb__media {
+    grid-area: media;
+    align-self: auto;
+
+    & img {
+      position: static;
+      display: block;
+      margin-inline: auto;
+      max-height: calc(100dvh - 15rem);
+    }
+  }
+
+  .lb__nav--prev {
+    grid-area: prev;
+    justify-self: start;
+  }
+
+  .lb__nav--next {
+    grid-area: next;
+    justify-self: end;
+  }
+
+  .lb__title {
+    font-size: 0.72rem;
+  }
+}
+
+/* ---------- Animações ---------- */
+@keyframes lb-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes lb-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes lb-img {
+  from {
+    opacity: 0;
+    translate: calc(var(--dir, 1) * 36px) 0;
+    scale: 0.98;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox[open],
+  .lightbox[open]::backdrop,
+  .lb__media img {
+    animation: none;
+  }
+}
