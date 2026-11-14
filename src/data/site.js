@@ -1,9 +1,12 @@
 /**
- * Conteúdo PADRÃO do site.
+ * Conteúdo do site.
  *
- * O conteúdo de verdade vem do Supabase e é editado pelo painel em /admin.
- * Este arquivo é a reserva: usado enquanto o banco carrega, se ele estiver
- * fora do ar ou se as variáveis do Supabase não estiverem configuradas.
+ * Com o painel admin DESLIGADO (padrão, VITE_ENABLE_ADMIN != "true"), este
+ * arquivo é a fonte do conteúdo publicado: para mudar algo no site, edite aqui.
+ *
+ * Com o painel LIGADO, o conteúdo vem do Supabase e este arquivo vira a reserva,
+ * usada enquanto o banco carrega ou se ele estiver fora do ar. Ao religar o
+ * painel, confira se o banco tem as mesmas mudanças feitas aqui no meio tempo.
  */
 
 export const navLinks = [

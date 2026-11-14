@@ -20,7 +20,18 @@ npm run preview    # testa o build localmente
 npm run images     # regenera as imagens otimizadas de public/img
 ```
 
-## Painel admin (/admin)
+## Painel admin (/admin) — desligado por enquanto
+
+O painel está pronto, mas foi adiado para mais perto da próxima edição do evento. Enquanto isso:
+
+- **Produção não tem `/admin`**: sem `VITE_ENABLE_ADMIN=true`, o código do painel nem entra no build e o endereço `/admin` mostra o site.
+- **O conteúdo vem do código**: o site usa `src/data/site.js` e não consulta o Supabase. Para mudar textos, atrações, ingressos etc., edite esse arquivo e publique.
+- **O banco continua lá**, com o mesmo conteúdo publicado hoje (14/11/2026), pronto para quando o painel voltar.
+
+**Para religar o painel:**
+1. Em `.env.local` (desenvolvimento) e na Vercel (Settings → Environment Variables), defina `VITE_ENABLE_ADMIN=true`. As variáveis do Supabase já estão cadastradas na Vercel para Production e Preview.
+2. Se `src/data/site.js` mudou desde 14/11/2026, leve as mesmas mudanças para o banco (pelo painel ou por SQL). Com o painel ligado, o site passa a mostrar o que está no banco.
+3. Publique: as variáveis só valem a partir de um build novo.
 
 | Página | O que edita |
 |---|---|
@@ -33,13 +44,13 @@ npm run images     # regenera as imagens otimizadas de public/img
 | Pontos de venda | Lojas agrupadas por cidade |
 | Patrocinadores | Logos, com ajuste de tamanho e prévia |
 | Atividade | Histórico de quem alterou o quê |
-| Minha conta | Troca de senha |
+| Minha conta | Foto, nome, apelido, função, troca de senha e encerrar sessões |
 
 Em todas as listas dá para **arrastar para reordenar**, **ocultar sem excluir**, buscar, editar e excluir. Imagens enviadas são **redimensionadas e convertidas para WebP no navegador** antes do upload (logos também têm a borda transparente recortada).
 
 ### Como o site usa o banco
 
-O site carrega o conteúdo do Supabase ao abrir. Enquanto carrega — ou se o banco estiver fora do ar — ele mostra a última versão salva no navegador ou o conteúdo padrão de `src/data/site.js`. Ou seja, o site nunca fica em branco.
+Com o painel ligado, o site carrega o conteúdo do Supabase ao abrir. Enquanto carrega — ou se o banco estiver fora do ar — ele mostra a última versão salva no navegador ou o conteúdo padrão de `src/data/site.js`. Ou seja, o site nunca fica em branco.
 
 ### Configuração (uma vez)
 

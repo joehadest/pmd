@@ -4,10 +4,14 @@ import { fallbackContent, mapContent } from '../data/site';
 const CACHE_KEY = 'pmd:content:v1';
 const ContentContext = createContext(fallbackContent);
 
+// O banco só é usado junto com o painel admin. Com o painel desligado
+// (VITE_ENABLE_ADMIN diferente de "true"), o conteúdo vem de src/data/site.js.
+const USE_DATABASE = import.meta.env.VITE_ENABLE_ADMIN === 'true';
+
 // O site só LÊ dados: usa a API REST do Supabase direto com fetch, sem carregar
 // a biblioteca completa (que fica só no painel admin). Economiza ~50 KB.
-const API_URL = import.meta.env.VITE_SUPABASE_URL;
-const API_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const API_URL = USE_DATABASE ? import.meta.env.VITE_SUPABASE_URL : '';
+const API_KEY = USE_DATABASE ? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY : '';
 
 async function rest(path) {
   const res = await fetch(`${API_URL}/rest/v1/${path}`, { headers: { apikey: API_KEY } });
@@ -47,7 +51,7 @@ export async function fetchContentRows() {
  * com o Supabase em seguida — o site nunca fica em branco esperando o banco.
  */
 export function ContentProvider({ children }) {
-  const [content, setContent] = useState(() => readCache() || fallbackContent);
+  const [content, setContent] = useState(() => (USE_DATABASE && readCache()) || fallbackContent);
 
   useEffect(() => {
     if (!API_URL || !API_KEY) return;
