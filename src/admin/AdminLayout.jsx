@@ -17,6 +17,8 @@ import {
   FiX,
 } from 'react-icons/fi';
 import { useAuth } from './auth';
+import { getProfile } from './lib/profile';
+import { Avatar } from './components/ui';
 
 export const NAV = [
   {
@@ -50,6 +52,7 @@ const ALL = NAV.flatMap((g) => g.items);
 
 export default function AdminLayout() {
   const { user, signOut } = useAuth();
+  const profile = getProfile(user);
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
@@ -109,12 +112,13 @@ export default function AdminLayout() {
             <FiExternalLink aria-hidden="true" /> Ver site
           </a>
           <div className="a-user">
-            <span className="a-user__avatar" aria-hidden="true">
-              {user?.email?.[0]?.toUpperCase()}
-            </span>
-            <span className="a-user__email" title={user?.email}>
-              {user?.email}
-            </span>
+            <NavLink to="/admin/conta" className="a-user__link" title="Minha conta">
+              <Avatar profile={profile} />
+              <span className="a-user__text">
+                <strong>{profile.displayName}</strong>
+                <small title={profile.email}>{profile.role || profile.email}</small>
+              </span>
+            </NavLink>
             <button type="button" className="a-btn a-btn--icon a-btn--ghost" onClick={signOut} aria-label="Sair" title="Sair">
               <FiLogOut />
             </button>

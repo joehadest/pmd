@@ -9,7 +9,20 @@ export const PRESETS = {
   photo: { maxWidth: 1600, maxHeight: 1600, quality: 0.8 }, // fotos da estrutura
   flyer: { maxWidth: 1080, maxHeight: 1920, quality: 0.85 }, // cartaz do open bar
   logo: { maxWidth: 800, maxHeight: 240, quality: 0.9, trim: true }, // logos (fundo transparente)
+  avatar: { maxWidth: 320, maxHeight: 320, quality: 0.85, square: true }, // foto de perfil
 };
+
+/** Recorta o centro da imagem em um quadrado (fotos de perfil). */
+function cropSquare(canvas) {
+  const side = Math.min(canvas.width, canvas.height);
+  const out = document.createElement('canvas');
+  out.width = side;
+  out.height = side;
+  out
+    .getContext('2d')
+    .drawImage(canvas, (canvas.width - side) / 2, (canvas.height - side) / 2, side, side, 0, 0, side, side);
+  return out;
+}
 
 const slug = (name) =>
   name
@@ -60,6 +73,7 @@ export async function prepareImage(file, presetName = 'photo') {
   bitmap.close?.();
 
   if (preset.trim) source = trimTransparent(source);
+  if (preset.square) source = cropSquare(source);
 
   const scale = Math.min(1, preset.maxWidth / source.width, preset.maxHeight / source.height);
   const canvas = document.createElement('canvas');

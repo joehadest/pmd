@@ -3,6 +3,17 @@ import { FiImage, FiPlus, FiTrash2, FiUploadCloud, FiX } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { uploadImage } from '../lib/media';
 
+/* ---------------------------------------------------------------- Avatar -- */
+
+/** Foto de perfil, ou as iniciais quando não há foto. */
+export function Avatar({ profile, size = 32 }) {
+  return (
+    <span className="a-avatar" style={{ '--size': `${size}px` }} aria-hidden="true">
+      {profile.avatarUrl ? <img src={profile.avatarUrl} alt="" /> : profile.initials}
+    </span>
+  );
+}
+
 /* ---------------------------------------------------------------- Layout -- */
 
 export function PageHeader({ icon: Icon, title, description, actions }) {
@@ -72,9 +83,16 @@ export function ErrorBox({ error }) {
 
 /* ---------------------------------------------------------------- Campos -- */
 
-export function Field({ label, hint, required, children, htmlFor, full }) {
+/**
+ * Campo de formulário. Os formulários usam uma grade; `full` ocupa a linha
+ * inteira e `span` ocupa N colunas (ex.: Cidade 4 + UF 2 numa grade de 6).
+ */
+export function Field({ label, hint, required, children, htmlFor, full, span }) {
   return (
-    <div className={`a-field${full ? ' a-field--full' : ''}`}>
+    <div
+      className={`a-field${full ? ' a-field--full' : ''}`}
+      style={span && !full ? { gridColumn: `span ${span}` } : undefined}
+    >
       {label && (
         <label className="a-label" htmlFor={htmlFor}>
           {label}
@@ -87,14 +105,15 @@ export function Field({ label, hint, required, children, htmlFor, full }) {
   );
 }
 
-export function Switch({ checked, onChange, label, description, disabled }) {
+export function Switch({ checked, onChange, label, description, disabled, compact, ariaLabel }) {
   const id = useId();
   return (
-    <label className="a-switch" htmlFor={id}>
+    <label className={`a-switch${compact ? ' a-switch--compact' : ''}`} htmlFor={id}>
       <input
         id={id}
         type="checkbox"
         role="switch"
+        aria-label={ariaLabel}
         checked={!!checked}
         disabled={disabled}
         onChange={(e) => onChange(e.target.checked)}

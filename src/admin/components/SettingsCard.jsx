@@ -44,12 +44,20 @@ export default function SettingsCard({ settings, title, description, fields, col
   };
 
   return (
-    <Card title={title} description={description}>
+    <Card title={title} description={description} className={dirty ? 'a-card--dirty' : ''}>
       <form id={formId} className="a-form" style={{ '--cols': columns }} onSubmit={save} noValidate>
         {fields.map((field) => {
           const id = `${formId}-${field.name}`;
           return (
-            <Field key={field.name} label={field.label} hint={field.hint} required={field.required} htmlFor={id} full={field.full}>
+            <Field
+              key={field.name}
+              label={field.hideLabel ? undefined : field.label}
+              hint={field.hint}
+              required={field.required}
+              htmlFor={id}
+              full={field.full}
+              span={field.span}
+            >
               <FieldInput
                 id={id}
                 field={field}
@@ -60,15 +68,18 @@ export default function SettingsCard({ settings, title, description, fields, col
           );
         })}
       </form>
-      <footer className="a-card__foot" data-dirty={dirty || undefined}>
-        <span className="a-card__status">{dirty ? 'Alterações não salvas' : 'Tudo salvo'}</span>
-        <button type="button" className="a-btn a-btn--ghost" onClick={() => setValues(initial)} disabled={!dirty || saving}>
-          <FiRotateCcw /> Desfazer
-        </button>
-        <button type="submit" form={formId} className="a-btn a-btn--primary" disabled={!dirty || saving}>
-          {saving ? <Spinner /> : <FiCheck />} Salvar
-        </button>
-      </footer>
+      {/* A barra de salvar só aparece quando há algo para salvar */}
+      {(dirty || saving) && (
+        <footer className="a-card__foot">
+          <span className="a-card__status">Alterações não salvas</span>
+          <button type="button" className="a-btn a-btn--ghost" onClick={() => setValues(initial)} disabled={saving}>
+            <FiRotateCcw /> Desfazer
+          </button>
+          <button type="submit" form={formId} className="a-btn a-btn--primary" disabled={saving}>
+            {saving ? <Spinner /> : <FiCheck />} Salvar
+          </button>
+        </footer>
+      )}
     </Card>
   );
 }

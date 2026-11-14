@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router';
 import { FiArrowLeft, FiLock, FiLogIn, FiMail } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { useAuth } from '../auth';
-import { Card, PageHeader, Spinner } from '../components/ui';
+import { Spinner } from '../components/ui';
 
 /** Moldura das telas de acesso: arte da marca + formulário. */
 function AuthShell({ title, subtitle, children }) {
@@ -34,7 +34,7 @@ function AuthShell({ title, subtitle, children }) {
 }
 
 export function LoginPage() {
-  const { status, signIn } = useAuth();
+  const { status, signIn, expired } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -59,6 +59,11 @@ export function LoginPage() {
 
   return (
     <AuthShell title="Entrar no painel" subtitle="Acesso restrito à equipe do Camarote PMD.">
+      {expired && (
+        <p className="a-auth__notice" role="status">
+          Sua sessão foi encerrada (por exemplo, após trocar a senha). Entre novamente para continuar.
+        </p>
+      )}
       <form className="a-auth__form" onSubmit={submit}>
         <label className="a-auth__input">
           <FiMail aria-hidden="true" />
@@ -143,7 +148,7 @@ export function ForgotPasswordPage() {
 }
 
 /** Formulário de nova senha (link de recuperação e página "Minha conta"). */
-function PasswordForm({ onDone }) {
+export function PasswordForm({ onDone }) {
   const { updatePassword } = useAuth();
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -210,17 +215,5 @@ export function ResetPasswordPage() {
         <FiArrowLeft /> Voltar para o login
       </Link>
     </AuthShell>
-  );
-}
-
-export function AccountPage() {
-  const { user } = useAuth();
-  return (
-    <div className="a-page">
-      <PageHeader icon={FiLock} title="Minha conta" description={user?.email} />
-      <Card title="Alterar senha" description="Depois de salvar, use a nova senha no próximo login." className="a-card--narrow">
-        <PasswordForm />
-      </Card>
-    </div>
   );
 }

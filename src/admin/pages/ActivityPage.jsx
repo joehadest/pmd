@@ -19,6 +19,9 @@ const ACTIONS = {
   delete: { icon: FiTrash2, verb: 'excluiu', tone: 'red' },
 };
 
+/** Quem fez a alteração: apelido do perfil → parte do e-mail → "Sistema". */
+const actor = (r) => r.actor_name || r.actor_email?.split('@')[0] || 'Sistema';
+
 const rtf = new Intl.RelativeTimeFormat('pt-BR', { numeric: 'auto' });
 export function timeAgo(date) {
   const diff = (new Date(date) - Date.now()) / 1000;
@@ -58,10 +61,17 @@ export function ActivityList({ limit = 50, table = '' }) {
               <a.icon />
             </span>
             <div>
-              <p>
-                <strong>{r.actor_email?.split('@')[0] || 'Sistema'}</strong> {a.verb}{' '}
-                {r.label ? <em>“{r.label}”</em> : 'um item'} em <strong>{TABLE_LABELS[r.table_name] || r.table_name}</strong>
-              </p>
+              {r.table_name === 'site_settings' ? (
+                <p>
+                  <strong>{actor(r)}</strong> atualizou as{' '}
+                  <strong>configurações do site</strong>
+                </p>
+              ) : (
+                <p>
+                  <strong>{actor(r)}</strong> {a.verb}{' '}
+                  {r.label ? <em>“{r.label}”</em> : 'um item'} em <strong>{TABLE_LABELS[r.table_name] || r.table_name}</strong>
+                </p>
+              )}
               <time dateTime={r.created_at} title={new Date(r.created_at).toLocaleString('pt-BR')}>
                 {timeAgo(r.created_at)}
               </time>

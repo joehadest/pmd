@@ -53,6 +53,7 @@ export function OpenBarPage() {
       title="Open Bar"
       description="Cartaz e lista de bebidas liberadas."
       singular="bebida"
+      listTitle="Bebidas liberadas"
       searchKeys={['title', 'detail']}
       defaults={{ title: '', detail: '' }}
       emptyText="Liste o que estará liberado no open bar."
@@ -64,7 +65,7 @@ export function OpenBarPage() {
             description="Imagem vertical exibida ao lado da lista e ampliada ao clicar."
             columns={1}
             fields={[
-              { name: 'openbar_poster_url', label: 'Cartaz', type: 'image', preset: 'flyer', folder: 'openbar', aspect: '9 / 16', contain: true },
+              { name: 'openbar_poster_url', label: 'Cartaz', hideLabel: true, type: 'image', preset: 'flyer', folder: 'openbar', aspect: '9 / 16', contain: true },
             ]}
           />
         </SettingsBlock>
@@ -86,7 +87,7 @@ export function StructurePage() {
       table="structure_photos"
       icon={FiImage}
       title="Estrutura"
-      description="Galeria de fotos do camarote. As 8 primeiras formam o mosaico do site."
+      description="Galeria de fotos do camarote, na ordem em que aparecem no site."
       singular="foto"
       layout="grid"
       imageKey="image_url"
@@ -108,7 +109,11 @@ export function StructurePage() {
           full: true,
         },
       ]}
-      describe={(p) => ({ title: p.alt || 'Foto sem descrição', image: p.image_url })}
+      describe={(p, i) => ({
+        title: i >= 0 ? `Foto ${i + 1}` : 'Nova foto',
+        subtitle: p.alt || 'Sem descrição',
+        image: p.image_url,
+      })}
     />
   );
 }
@@ -124,6 +129,7 @@ export function TicketsPage() {
       title="Ingressos"
       description="Lote atual, link de vendas e tipos de ingresso."
       singular="ingresso"
+      listTitle="Tipos de ingresso"
       defaults={{ name: '', people_label: '', price: 0, per_person: null, featured: false, perks: [], purchase_url: '' }}
       emptyText="Cadastre os tipos de ingresso à venda."
       before={
@@ -254,7 +260,7 @@ export function SponsorsPage() {
       ]}
       describe={(s) => ({
         title: s.name || 'Sem nome',
-        subtitle: `Tamanho ${Math.round((s.scale || 1) * 100)}%`,
+        subtitle: Number(s.scale || 1) !== 1 ? `Logo ampliado: ${Math.round(s.scale * 100)}%` : s.website_url?.replace(/^https?:\/\/(www\.)?/, '') || '',
         image: s.logo_url,
         aspect: '16 / 9',
         contain: true,

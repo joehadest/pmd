@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 import {
   FiActivity,
   FiArrowRight,
-  FiCalendar,
   FiCoffee,
   FiExternalLink,
   FiGrid,
@@ -16,6 +15,7 @@ import {
 } from 'react-icons/fi';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../auth';
+import { getProfile } from '../lib/profile';
 import { useSettings } from '../hooks/useCollection';
 import { Card, ErrorBox, PageHeader, Spinner } from '../components/ui';
 import { SectionsCard } from './EventPage';
@@ -56,7 +56,7 @@ export default function Dashboard() {
   const settings = useSettings();
   const stats = useStats();
   const s = settings.data;
-  const name = user?.email?.split('@')[0];
+  const name = getProfile(user).displayName;
 
   return (
     <div className="a-page">
@@ -64,11 +64,6 @@ export default function Dashboard() {
         icon={FiGrid}
         title={`${greeting()}${name ? `, ${name}` : ''}!`}
         description="Resumo do conteúdo publicado no site do Camarote PMD."
-        actions={
-          <a className="a-btn a-btn--ghost" href="/" target="_blank" rel="noopener noreferrer">
-            <FiExternalLink /> Abrir site
-          </a>
-        }
       />
 
       <ul className="a-stats" role="list">
@@ -112,7 +107,7 @@ export default function Dashboard() {
                 <div>
                   <dt>Data</dt>
                   <dd>
-                    <FiCalendar aria-hidden="true" /> {s.date_label} · {s.date_days}
+                    {s.date_label} · {s.date_days}
                   </dd>
                 </div>
                 <div>
@@ -144,6 +139,19 @@ export default function Dashboard() {
             )}
           </Card>
 
+          <Card
+            title="Últimas alterações"
+            actions={
+              <Link to="atividade" className="a-btn a-btn--ghost a-btn--sm">
+                <FiActivity /> Ver tudo
+              </Link>
+            }
+          >
+            <ActivityList limit={6} />
+          </Card>
+        </div>
+
+        <div className="a-stack">
           <Card title="Atalhos">
             <div className="a-quick">
               <Link to="lineup" className="a-quick__item">
@@ -160,20 +168,7 @@ export default function Dashboard() {
               </Link>
             </div>
           </Card>
-        </div>
-
-        <div className="a-stack">
           {s && <SectionsCard settings={settings} compact />}
-          <Card
-            title="Últimas alterações"
-            actions={
-              <Link to="atividade" className="a-btn a-btn--ghost a-btn--sm">
-                <FiActivity /> Ver tudo
-              </Link>
-            }
-          >
-            <ActivityList limit={6} />
-          </Card>
         </div>
       </div>
     </div>

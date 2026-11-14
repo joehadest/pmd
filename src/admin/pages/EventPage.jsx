@@ -36,8 +36,15 @@ export function SectionsCard({ settings, compact }) {
     >
       <ul className="a-sections" role="list">
         {Object.entries(SECTION_KEYS).map(([key, label]) => (
-          <li key={key}>
-            <Switch checked={values[key]} onChange={(on) => toggle(key, on)} label={label} disabled={saving === key} />
+          <li key={key} data-off={!values[key] || undefined}>
+            <span className="a-sections__name">{label}</span>
+            <span className="a-sections__status">{values[key] ? 'Visível' : 'Oculta'}</span>
+            <Switch
+              checked={values[key]}
+              onChange={(on) => toggle(key, on)}
+              ariaLabel={`${label}: visível no site`}
+              disabled={saving === key}
+            />
           </li>
         ))}
       </ul>
@@ -67,15 +74,16 @@ export default function EventPage() {
               settings={settings}
               title="Evento"
               description="Usado no topo, nas faixas do vídeo e no rodapé."
+              columns={6}
               fields={[
-                { name: 'event_name', label: 'Nome do evento', required: true },
-                { name: 'edition', label: 'Edição', placeholder: 'Ex.: Alto Folia 2026' },
+                { name: 'event_name', label: 'Nome do evento', required: true, span: 3 },
+                { name: 'edition', label: 'Edição', placeholder: 'Ex.: Alto Folia 2026', span: 3 },
                 { name: 'organizer', label: 'Realização', placeholder: 'Ex.: Bloco Pode Mangar Deu', full: true },
-                { name: 'date_label', label: 'Data por extenso', placeholder: 'Ex.: 28 e 29 de março' },
-                { name: 'date_short', label: 'Data curta', placeholder: 'Ex.: 28 & 29/03' },
-                { name: 'date_days', label: 'Dias da semana', placeholder: 'Ex.: Sábado e Domingo' },
-                { name: 'city', label: 'Cidade' },
-                { name: 'state', label: 'UF', placeholder: 'RN' },
+                { name: 'date_label', label: 'Data por extenso', placeholder: 'Ex.: 28 e 29 de março', span: 3 },
+                { name: 'date_days', label: 'Dias da semana', placeholder: 'Ex.: Sábado e Domingo', span: 3 },
+                { name: 'date_short', label: 'Data curta', placeholder: 'Ex.: 28 & 29/03', span: 2 },
+                { name: 'city', label: 'Cidade', span: 3 },
+                { name: 'state', label: 'UF', placeholder: 'RN', span: 1 },
               ]}
             />
 
@@ -95,7 +103,7 @@ export default function EventPage() {
               title="Vídeo"
               description="Vídeo da faixa de ponta a ponta. Toca mudo e em loop."
               columns={1}
-              fields={[{ name: 'video_url', label: 'Vídeo', type: 'video', folder: 'video' }]}
+              fields={[{ name: 'video_url', label: 'Vídeo', hideLabel: true, type: 'video', folder: 'video' }]}
             />
           </div>
 

@@ -9,7 +9,8 @@ import Dashboard from './pages/Dashboard';
 import EventPage from './pages/EventPage';
 import ActivityPage from './pages/ActivityPage';
 import { LineupPage, OpenBarPage, SalesPointsPage, SponsorsPage, StructurePage, TicketsPage } from './pages/content';
-import { AccountPage, ForgotPasswordPage, LoginPage, ResetPasswordPage } from './pages/AuthPages';
+import { ForgotPasswordPage, LoginPage, ResetPasswordPage } from './pages/AuthPages';
+import AccountPage from './pages/AccountPage';
 import './admin.css';
 
 function FullScreen({ children }) {

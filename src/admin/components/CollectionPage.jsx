@@ -26,12 +26,12 @@ import { Drawer, EmptyState, ErrorBox, Field, FieldInput, PageHeader, Spinner, S
 const SYSTEM_KEYS = ['id', 'position', 'created_at', 'updated_at'];
 
 /** Item arrastável (linha ou cartão). */
-function SortableItem({ item, layout, describe, disabled, onEdit, onDelete, onToggle }) {
+function SortableItem({ item, index, layout, describe, disabled, onEdit, onDelete, onToggle }) {
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } = useSortable({
     id: item.id,
     disabled,
   });
-  const info = describe(item);
+  const info = describe(item, index);
   const style = { transform: CSS.Transform.toString(transform), transition };
 
   const handle = (
@@ -50,7 +50,13 @@ function SortableItem({ item, layout, describe, disabled, onEdit, onDelete, onTo
 
   const actions = (
     <div className="a-item__actions">
-      <Switch checked={item.active} onChange={(v) => onToggle(item, v)} />
+      <Switch
+        compact
+        checked={item.active}
+        onChange={(v) => onToggle(item, v)}
+        label={item.active ? 'Visível' : 'Oculto'}
+        ariaLabel={`${info.title}: visível no site`}
+      />
       <button type="button" className="a-btn a-btn--icon a-btn--ghost" onClick={() => onEdit(item)} aria-label={`Editar ${info.title}`}>
         <FiEdit2 />
       </button>
@@ -78,7 +84,6 @@ function SortableItem({ item, layout, describe, disabled, onEdit, onDelete, onTo
           {info.image ? <img src={info.image} alt="" loading="lazy" style={info.imageStyle} /> : <span>Sem imagem</span>}
         </button>
         {handle}
-        {!item.active && <span className="a-badge a-tile__badge">Oculto</span>}
         <div className="a-tile__body">
           <div className="a-tile__text">
             <strong>{info.title}</strong>
@@ -109,7 +114,6 @@ function SortableItem({ item, layout, describe, disabled, onEdit, onDelete, onTo
         {info.subtitle && <small>{info.subtitle}</small>}
       </button>
       {info.meta && <div className="a-row__meta">{info.meta}</div>}
-      {!item.active && <span className="a-badge">Oculto</span>}
       {actions}
     </li>
   );
@@ -133,6 +137,7 @@ export default function CollectionPage({
   imageKey,
   bulkUpload,
   before,
+  listTitle,
   emptyText,
 }) {
   const { items, loading, error, create, update, remove, reorder } = useCollection(table);
@@ -211,7 +216,7 @@ export default function CollectionPage({
 
   /* ---------- Ações da lista ---------- */
   const handleDelete = async (item) => {
-    const label = describe(item).title;
+    const label = describe(item, items.indexOf(item)).title;
     const ok = await confirm({
       title: `Excluir ${singular}?`,
       message: `"${label}" será removid${gender(singular)} do site. Essa ação não pode ser desfeita.`,
@@ -306,6 +311,8 @@ export default function CollectionPage({
 
       <ErrorBox error={error} />
 
+      {listTitle && <h2 className="a-list-title">{listTitle}</h2>}
+
       <div className="a-toolbar">
         <div className="a-search">
           <FiSearch aria-hidden="true" />
@@ -347,6 +354,7 @@ export default function CollectionPage({
                 <SortableItem
                   key={item.id}
                   item={item}
+                  index={items.indexOf(item)}
                   layout={layout}
                   describe={describe}
                   disabled={!!query}
@@ -363,7 +371,7 @@ export default function CollectionPage({
       <Drawer
         open={!!editing}
         title={editing?.item ? `Editar ${singular}` : `Nov${gender(singular)} ${singular}`}
-        subtitle={editing?.item ? describe(editing.item).title : 'Preencha os campos e salve.'}
+        subtitle={editing?.item ? describe(editing.item, items.indexOf(editing.item)).title : 'Preencha os campos e salve.'}
         onClose={cancel}
         footer={
           <>
@@ -381,7 +389,15 @@ export default function CollectionPage({
             {fields.map((field) => {
               const id = `${formId}-${field.name}`;
               return (
-                <Field key={field.name} label={field.label} hint={field.hint} required={field.required} htmlFor={id} full={field.full}>
+                <Field
+                  key={field.name}
+                  label={field.hideLabel ? undefined : field.label}
+                  hint={field.hint}
+                  required={field.required}
+                  htmlFor={id}
+                  full={field.full}
+                  span={field.span}
+                >
                   <FieldInput
                     id={id}
                     field={typeof field.options === 'function' ? { ...field, options: field.options(items) } : field}
@@ -393,7 +409,7 @@ export default function CollectionPage({
               );
             })}
             {field_preview(editing, describe)}
-            <Field full>
+            <Field full label="Publicação">
               <Switch
                 checked={editing.values.active}
                 onChange={(v) => setValue('active', v)}
@@ -410,7 +426,7 @@ export default function CollectionPage({
 
 /** Prévia ao vivo opcional (ex.: logo com escala). */
 function field_preview(editing, describe) {
-  const info = describe(editing.values);
+  const info = describe(editing.values, -1);
   return info.livePreview ? <div className="a-field a-field--full">{info.livePreview}</div> : null;
 }
 
